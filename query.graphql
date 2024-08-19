@@ -1,0 +1,3 @@
+query {
+  cwe_id
+}
