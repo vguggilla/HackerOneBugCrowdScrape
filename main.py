@@ -5,9 +5,17 @@ from dotenv import load_dotenv
 
 url = 'https://hackerone.com/graphql'
 
+with open('cwes_all.json') as f:
+    d = json.load(f)
+    cweList = []
+    for dic in d:
+         cweList.append(dic["id"])
+
+    print(cweList)
+
 operationName = "CweDetailsQuery"
 variables = {
-    "cwe_id": "cwe-269",
+    "cwe_id": "cwe-79",
     "product_area": "hackactivity",
     "product_feature": "cwe_discovery"
 }
@@ -135,10 +143,11 @@ print("response status code: ", response.status_code)
 if response.status_code == 200:
     print("response : ", response.content)
     data = response.json()
-    with open('C:\\Users\\vishr\\PycharmProjects\\HackerOneScrape\\CVEJSON.json', 'w') as f:
+    with open('C:\\Users\\vishr\\PycharmProjects\\HackerOneScrape\\CWEJSON.json', 'w') as f:
         json.dump(data, f)
 #     print(response.json()["data"]["__type"]['fields'])
 #     for dic in response.json()["data"]["__type"]['fields']:
 #         print(dic["name"])
+
 
 
