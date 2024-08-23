@@ -1,0 +1,1 @@
+{"id": "CWE-822", "description": "The product obtains a value from an untrusted source, converts this value to a pointer, and dereferences the resulting pointer.", "hackerone": {"collected_date": "2024-08-22T16:48:58Z", "total_reports": 76, "unique_reports_last_12_weeks": 5, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 0}}}}

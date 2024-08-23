@@ -1,0 +1,1 @@
+{"id": "CWE-798", "description": "The product contains hard-coded credentials, such as a password or cryptographic key.", "hackerone": {"collected_date": "2024-08-22T16:48:56Z", "total_reports": 1490, "unique_reports_last_12_weeks": 34, "severity_distribution": {"all_time": {"critical": 89, "high": 177, "medium": 282, "low": 200}}}}

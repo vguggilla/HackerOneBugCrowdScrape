@@ -1,0 +1,1 @@
+{"id": "CWE-668", "description": "The product exposes a resource to the wrong control sphere, providing unintended actors with inappropriate access to the resource.", "hackerone": {"collected_date": "2024-08-22T16:48:42Z", "total_reports": 83, "unique_reports_last_12_weeks": 8, "severity_distribution": {"all_time": {"critical": 1, "high": 2, "medium": 5, "low": 5}}}}

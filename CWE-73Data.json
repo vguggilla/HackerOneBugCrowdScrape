@@ -1,0 +1,1 @@
+{"id": "CWE-73", "description": "The product allows user input to control or influence paths or file names that are used in filesystem operations.", "hackerone": {"collected_date": "2024-08-22T16:48:48Z", "total_reports": 81, "unique_reports_last_12_weeks": 2, "severity_distribution": {"all_time": {"critical": 0, "high": 1, "medium": 1, "low": 2}}}}

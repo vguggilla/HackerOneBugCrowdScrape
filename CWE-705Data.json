@@ -1,0 +1,1 @@
+{"id": "CWE-705", "description": "The product does not properly return control flow to the proper location after it has completed a task or detected an unusual condition.", "hackerone": {"collected_date": "2024-08-22T16:48:47Z", "total_reports": 58, "unique_reports_last_12_weeks": 2, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 0}}}}

@@ -1,0 +1,1 @@
+{"id": "CWE-922", "description": "The product stores sensitive information without properly limiting read or write access by unauthorized actors.", "hackerone": {"collected_date": "2024-08-22T16:49:06Z", "total_reports": 3918, "unique_reports_last_12_weeks": 85, "severity_distribution": {"all_time": {"critical": 99, "high": 372, "medium": 1070, "low": 654}}}}

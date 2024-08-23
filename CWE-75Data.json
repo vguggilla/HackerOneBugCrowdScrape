@@ -1,0 +1,1 @@
+{"id": "CWE-75", "description": "The product does not adequately filter user-controlled input for special elements with control implications.", "hackerone": {"collected_date": "2024-08-22T16:48:49Z", "total_reports": 390, "unique_reports_last_12_weeks": 9, "severity_distribution": {"all_time": {"critical": 5, "high": 8, "medium": 29, "low": 37}}}}

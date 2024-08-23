@@ -1,0 +1,1 @@
+{"id": "CWE-942", "description": "The product uses a cross-domain policy file that includes domains that should not be trusted.", "hackerone": {"collected_date": "2024-08-22T16:49:07Z", "total_reports": 95, "unique_reports_last_12_weeks": 4, "severity_distribution": {"all_time": {"critical": 0, "high": 1, "medium": 3, "low": 1}}}}

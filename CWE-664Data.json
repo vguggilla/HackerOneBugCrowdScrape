@@ -1,0 +1,1 @@
+{"id": "CWE-664", "description": "The product does not maintain or incorrectly maintains control over a resource throughout its lifetime of creation, use, and release.", "hackerone": {"collected_date": "2024-08-22T16:48:41Z", "total_reports": 75, "unique_reports_last_12_weeks": 10, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 1, "low": 1}}}}

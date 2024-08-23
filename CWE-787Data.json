@@ -1,0 +1,1 @@
+{"id": "CWE-787", "description": "The product writes data past the end, or before the beginning, of the intended buffer.", "hackerone": {"collected_date": "2024-08-22T16:48:55Z", "total_reports": 389, "unique_reports_last_12_weeks": 43, "severity_distribution": {"all_time": {"critical": 1, "high": 65, "medium": 80, "low": 7}}}}

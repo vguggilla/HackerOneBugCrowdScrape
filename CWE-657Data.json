@@ -1,0 +1,1 @@
+{"id": "CWE-657", "description": "The product violates well-established principles for secure design.", "hackerone": {"collected_date": "2024-08-22T16:48:41Z", "total_reports": 18324, "unique_reports_last_12_weeks": 687, "severity_distribution": {"all_time": {"critical": 69, "high": 400, "medium": 1413, "low": 6538}}}}

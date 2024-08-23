@@ -1,0 +1,1 @@
+{"id": "CWE-602", "description": "The product is composed of a server that relies on the client to implement a mechanism that is intended to protect the server.", "hackerone": {"collected_date": "2024-08-22T16:48:33Z", "total_reports": 788, "unique_reports_last_12_weeks": 12, "severity_distribution": {"all_time": {"critical": 9, "high": 32, "medium": 118, "low": 121}}}}

@@ -1,0 +1,1 @@
+{"id": "CWE-684", "description": "The code does not function according to its published specifications, potentially leading to incorrect usage.", "hackerone": {"collected_date": "2024-08-22T16:48:44Z", "total_reports": 63, "unique_reports_last_12_weeks": 2, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 1}}}}

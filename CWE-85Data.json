@@ -1,0 +1,1 @@
+{"id": "CWE-85", "description": "The web application does not filter user-controlled input for executable script disguised using doubling of the involved characters.", "hackerone": {"collected_date": "2024-08-22T16:49:02Z", "total_reports": 68, "unique_reports_last_12_weeks": 3, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 0}}}}

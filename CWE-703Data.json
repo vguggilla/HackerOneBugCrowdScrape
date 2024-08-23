@@ -1,0 +1,1 @@
+{"id": "CWE-703", "description": "The product does not properly anticipate or handle exceptional conditions that rarely occur during normal operation of the product.", "hackerone": {"collected_date": "2024-08-22T16:48:47Z", "total_reports": 366, "unique_reports_last_12_weeks": 21, "severity_distribution": {"all_time": {"critical": 0, "high": 14, "medium": 27, "low": 38}}}}

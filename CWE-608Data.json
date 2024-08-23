@@ -1,0 +1,1 @@
+{"id": "CWE-608", "description": "An ActionForm class contains a field that has not been declared private, which can be accessed without using a setter or getter.", "hackerone": {"collected_date": "2024-08-22T16:48:34Z", "total_reports": 63, "unique_reports_last_12_weeks": 1, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 0}}}}

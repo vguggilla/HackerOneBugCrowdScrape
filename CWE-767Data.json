@@ -1,0 +1,1 @@
+{"id": "CWE-767", "description": "The product defines a public method that reads or modifies a private variable.", "hackerone": {"collected_date": "2024-08-22T16:48:51Z", "total_reports": 75, "unique_reports_last_12_weeks": 5, "severity_distribution": {"all_time": {"critical": 0, "high": 1, "medium": 1, "low": 0}}}}

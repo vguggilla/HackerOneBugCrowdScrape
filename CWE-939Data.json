@@ -1,0 +1,1 @@
+{"id": "CWE-939", "description": "The product uses a handler for a custom URL scheme, but it does not properly restrict which actors can invoke the handler using the scheme.", "hackerone": {"collected_date": "2024-08-22T16:49:07Z", "total_reports": 73, "unique_reports_last_12_weeks": 2, "severity_distribution": {"all_time": {"critical": 0, "high": 1, "medium": 3, "low": 2}}}}
