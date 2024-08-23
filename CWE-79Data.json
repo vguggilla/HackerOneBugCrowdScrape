@@ -2,7 +2,7 @@
   "id": "CWE-79",
   "description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.",
   "hackerone": {
-    "collected_date": "2024-08-22T16:48:55Z",
+    "collected_date": "2024-08-22T20:42:13Z",
     "total_reports": 93123,
     "unique_reports_last_12_weeks": 2258,
     "severity_distribution": {
@@ -12,6 +12,17 @@
         "medium": 35549,
         "low": 9478
       }
+    },
+    "change_distribution": {
+      "days_past": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
     }
+  },
+  "bugcrowd": {
+    "collected_date": "2024-08-22T20:42:13Z",
+    "vrt_id": "cross_site_scripting_xss"
   }
 }

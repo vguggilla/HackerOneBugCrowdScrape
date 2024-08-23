@@ -14,6 +14,7 @@ with open('cwes_all.json') as f:
     cweList = []
     for dic in d:
          cweList.append(dic["id"])
+cweListShortened = cweList[900:1000]
 
 for cwe in cweList:
     sleep(0.1)
@@ -54,10 +55,12 @@ for cwe in cweList:
     response = requests.post(url=url, json={"query": query, "variables": variables})
     # response = requests.post(url=url, json={"query": query2})
 
+
     print("response status code: ", response.status_code)
     if response.status_code == 200:
         data = response.json()
         dictionary = {}
+
         if data['data'] and data['data']['cwe_entry']:
             print("response : ", response.content)
             cwe_id = data['data']['cwe_entry']['cwe_id'].upper()
@@ -69,6 +72,8 @@ for cwe in cweList:
             high = data['data']['cwe_entry']['submission_count_severity_high']
             medium = data['data']['cwe_entry']['submission_count_severity_medium']
             low = data['data']['cwe_entry']['submission_count_severity_low']
+
+            vrt_id = "unavailable"
 
             with open(f"{cwe}Data.json", 'r') as f:
                 d = json.loads(f.read())
@@ -82,6 +87,12 @@ for cwe in cweList:
                 old_medium = d['hackerone']['severity_distribution']['all_time']['medium']
                 old_low = d['hackerone']['severity_distribution']['all_time']['low']
 
+            with open('cwe.json') as f:
+                d = json.load(f)
+                for item in d["content"]:
+                    if item.get("cwe") and item.get("id"):
+                        if cwe in item.get("cwe", []):
+                            vrt_id = item.get("id", [])
 
             dictionary = {
                 "id": cwe_id,
@@ -105,6 +116,10 @@ for cwe in cweList:
                         "medium": medium - old_medium,
                         "low": low - old_low
                     }
+                },
+                "bugcrowd": {
+                    "collected_date": collected_date,
+                    "vrt_id": vrt_id,
                 }
             }
 
@@ -113,6 +128,9 @@ for cwe in cweList:
     #     print(response.json()["data"]["__type"]['fields'])
     #     for dic in response.json()["data"]["__type"]['fields']:
     #         print(dic["name"])
+
+
+
 
 
 
