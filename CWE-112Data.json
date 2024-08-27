@@ -1,1 +1,30 @@
-{"id": "CWE-112", "description": "The product accepts XML from an untrusted source but does not validate the XML against the proper schema.", "hackerone": {"collected_date": "2024-08-22T20:38:42Z", "total_reports": 63, "unique_reports_last_12_weeks": 1, "severity_distribution": {"all_time": {"critical": 0, "high": 0, "medium": 0, "low": 0}}, "change_distribution": {"days_past": 0, "critical": 0, "high": 0, "medium": 0, "low": 0}}, "bugcrowd": {"collected_date": "2024-08-22T20:38:42Z", "vrt_id": "unavailable"}}
+{
+  "id": "CWE-112",
+  "description": "The product accepts XML from an untrusted source but does not validate the XML against the proper schema.",
+  "hackerone": {
+    "collected_date": "2024-08-26T03:30:16Z",
+    "total_reports": 64,
+    "unique_reports_last_12_weeks": 2,
+    "severity_distribution": {
+      "all_time": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      }
+    },
+    "change_distribution": {
+      "days_past": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    }
+  },
+  "bugcrowd": {
+    "collected_date": "2024-08-26T03:30:16Z",
+    "vrt_id": "unavailable",
+    "parent_vrt_id": "unavailable",
+    "vrt_priority": 0
+  }
+}

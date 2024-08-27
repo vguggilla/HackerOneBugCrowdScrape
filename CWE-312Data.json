@@ -1,1 +1,30 @@
-{"id": "CWE-312", "description": "The product stores sensitive information in cleartext within a resource that might be accessible to another control sphere.", "hackerone": {"collected_date": "2024-08-22T20:40:16Z", "total_reports": 3303, "unique_reports_last_12_weeks": 119, "severity_distribution": {"all_time": {"critical": 116, "high": 336, "medium": 768, "low": 608}}, "change_distribution": {"days_past": 0, "critical": 0, "high": 0, "medium": 0, "low": 0}}, "bugcrowd": {"collected_date": "2024-08-22T20:40:16Z", "vrt_id": "unavailable"}}
+{
+  "id": "CWE-312",
+  "description": "The product stores sensitive information in cleartext within a resource that might be accessible to another control sphere.",
+  "hackerone": {
+    "collected_date": "2024-08-26T03:31:49Z",
+    "total_reports": 3307,
+    "unique_reports_last_12_weeks": 110,
+    "severity_distribution": {
+      "all_time": {
+        "critical": 116,
+        "high": 334,
+        "medium": 770,
+        "low": 608
+      }
+    },
+    "change_distribution": {
+      "days_past": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    }
+  },
+  "bugcrowd": {
+    "collected_date": "2024-08-26T03:31:49Z",
+    "vrt_id": "non_sensitive_application_data_stored_unencrypted",
+    "parent_vrt_id": "insecure_data_storage",
+    "vrt_priority": 5
+  }
+}

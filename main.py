@@ -74,6 +74,8 @@ for cwe in cweList:
             low = data['data']['cwe_entry']['submission_count_severity_low']
 
             vrt_id = "unavailable"
+            parent_vrt_id = "unavailable"
+            vrt_priority = 0
 
             with open(f"{cwe}Data.json", 'r') as f:
                 d = json.loads(f.read())
@@ -93,6 +95,62 @@ for cwe in cweList:
                     if item.get("cwe") and item.get("id"):
                         if cwe in item.get("cwe", []):
                             vrt_id = item.get("id", [])
+
+                        for item2 in item.get("children", []):
+                            if item2.get("cwe") and item2.get("id"):
+                                if cwe in item2.get("cwe", []):
+                                    vrt_id = item2.get("id", [])
+                                    parent_vrt_id = item.get("id", [])
+
+                                for item3 in item2.get("children", []):
+                                    if item3.get("cwe") and item3.get("id"):
+                                        if cwe in item3.get("cwe", []):
+                                            vrt_id = item3.get("id", [])
+                                            parent_vrt_id = item2.get("id", [])
+
+            with open('vulnerability-rating-taxonomy.json') as f:
+                d = json.load(f)
+                for item in d["content"]:
+                    if item.get("id"):
+                        if vrt_id in item.get("id", []):
+                            if item.get("priority"):
+                                vrt_priority = item.get("priority", [])
+                            elif item.get("children"):
+                                count = 0
+                                for item2 in item.get("children", []):
+                                    if item2.get("priority"):
+                                        vrt_priority += item2.get("priority", [])
+                                        count += 1
+                                if count != 0:
+                                    vrt_priority = vrt_priority / count
+
+                        for item2 in item.get("children", []):
+                            if item2.get("id"):
+                                if vrt_id in item2.get("id", []):
+                                    if item2.get("priority"):
+                                        vrt_priority = item2.get("priority", [])
+                                    elif item2.get("children"):
+                                        count = 0
+                                        for item3 in item2.get("children", []):
+                                            if item3.get("priority"):
+                                                vrt_priority += item3.get("priority", [])
+                                                count += 1
+                                        if count != 0:
+                                            vrt_priority = vrt_priority / count
+
+                                for item3 in item2.get("children", []):
+                                    if item3.get("id"):
+                                        if vrt_id in item3.get("id", []):
+                                            if item3.get("priority"):
+                                                vrt_priority = item3.get("priority", [])
+                                            elif item3.get("children"):
+                                                count = 0
+                                                for item4 in item3.get("children", []):
+                                                    if item4.get("priority"):
+                                                        vrt_priority += item4.get("priority", [])
+                                                        count += 1
+                                                if count != 0:
+                                                    vrt_priority = vrt_priority / count
 
             dictionary = {
                 "id": cwe_id,
@@ -120,6 +178,8 @@ for cwe in cweList:
                 "bugcrowd": {
                     "collected_date": collected_date,
                     "vrt_id": vrt_id,
+                    "parent_vrt_id": parent_vrt_id,
+                    "vrt_priority": vrt_priority
                 }
             }
 
