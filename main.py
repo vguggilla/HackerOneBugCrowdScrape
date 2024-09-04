@@ -14,7 +14,9 @@ with open('cwes_all.json') as f:
     cweList = []
     for dic in d:
          cweList.append(dic["id"])
-cweListShortened = cweList[900:1000]
+cweListShortened = cweList[216:217]
+
+allCWEJson = []
 
 for cwe in cweList:
     sleep(0.1)
@@ -73,8 +75,8 @@ for cwe in cweList:
             medium = data['data']['cwe_entry']['submission_count_severity_medium']
             low = data['data']['cwe_entry']['submission_count_severity_low']
 
-            vrt_id = "unavailable"
-            parent_vrt_id = "unavailable"
+            vrt_ids = []
+            parent_vrt_id = []
             vrt_priority = 0
 
             with open(f"{cwe}Data.json", 'r') as f:
@@ -94,63 +96,84 @@ for cwe in cweList:
                 for item in d["content"]:
                     if item.get("cwe") and item.get("id"):
                         if cwe in item.get("cwe", []):
-                            vrt_id = item.get("id", [])
+                            if item.get("id", []) not in vrt_ids:
+                                vrt_ids.append(item.get("id", []))
 
                         for item2 in item.get("children", []):
                             if item2.get("cwe") and item2.get("id"):
                                 if cwe in item2.get("cwe", []):
-                                    vrt_id = item2.get("id", [])
-                                    parent_vrt_id = item.get("id", [])
+                                    if item2.get("id", []) not in vrt_ids:
+                                        vrt_ids.append(item2.get("id", []))
+                                    if item.get("id", []) not in parent_vrt_id:
+                                        parent_vrt_id.append(item.get("id", []))
 
                                 for item3 in item2.get("children", []):
                                     if item3.get("cwe") and item3.get("id"):
                                         if cwe in item3.get("cwe", []):
-                                            vrt_id = item3.get("id", [])
-                                            parent_vrt_id = item2.get("id", [])
+                                            if item3.get("id", []) not in vrt_ids:
+                                                vrt_ids.append(item3.get("id", []))
+                                            if item2.get("id", []) not in parent_vrt_id:
+                                                parent_vrt_id.append(item2.get("id", []))
 
             with open('vulnerability-rating-taxonomy.json') as f:
                 d = json.load(f)
-                for item in d["content"]:
-                    if item.get("id"):
-                        if vrt_id in item.get("id", []):
-                            if item.get("priority"):
-                                vrt_priority = item.get("priority", [])
-                            elif item.get("children"):
-                                count = 0
-                                for item2 in item.get("children", []):
-                                    if item2.get("priority"):
-                                        vrt_priority += item2.get("priority", [])
-                                        count += 1
-                                if count != 0:
-                                    vrt_priority = vrt_priority / count
+                for vrt_id in vrt_ids:
+                    for item in d["content"]:
+                        if item.get("id"):
+                            if vrt_id in item.get("id", []):
+                                if item.get("priority"):
+                                    vrt_priority_new = item.get("priority", [])
+                                    if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                        vrt_priority = vrt_priority_new
+                                elif item.get("children"):
+                                    count = 0
+                                    vrt_priority_new = 0
+                                    for item2 in item.get("children", []):
+                                        if item2.get("priority"):
+                                            vrt_priority_new += item2.get("priority", [])
+                                            count += 1
+                                    if count != 0:
+                                        vrt_priority_new = vrt_priority_new / count
+                                        if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                            vrt_priority = vrt_priority_new
 
-                        for item2 in item.get("children", []):
-                            if item2.get("id"):
-                                if vrt_id in item2.get("id", []):
-                                    if item2.get("priority"):
-                                        vrt_priority = item2.get("priority", [])
-                                    elif item2.get("children"):
-                                        count = 0
-                                        for item3 in item2.get("children", []):
-                                            if item3.get("priority"):
-                                                vrt_priority += item3.get("priority", [])
-                                                count += 1
-                                        if count != 0:
-                                            vrt_priority = vrt_priority / count
+                            for item2 in item.get("children", []):
+                                if item2.get("id"):
+                                    if vrt_id in item2.get("id", []):
+                                        if item2.get("priority"):
+                                            vrt_priority_new = item2.get("priority", [])
+                                            if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                                vrt_priority = vrt_priority_new
+                                        elif item2.get("children"):
+                                            count = 0
+                                            vrt_priority_new = 0
+                                            for item3 in item2.get("children", []):
+                                                if item3.get("priority"):
+                                                    vrt_priority_new += item3.get("priority", [])
+                                                    count += 1
+                                            if count != 0:
+                                                vrt_priority_new = vrt_priority_new / count
+                                                if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                                    vrt_priority = vrt_priority_new
 
-                                for item3 in item2.get("children", []):
-                                    if item3.get("id"):
-                                        if vrt_id in item3.get("id", []):
-                                            if item3.get("priority"):
-                                                vrt_priority = item3.get("priority", [])
-                                            elif item3.get("children"):
-                                                count = 0
-                                                for item4 in item3.get("children", []):
-                                                    if item4.get("priority"):
-                                                        vrt_priority += item4.get("priority", [])
-                                                        count += 1
-                                                if count != 0:
-                                                    vrt_priority = vrt_priority / count
+                                    for item3 in item2.get("children", []):
+                                        if item3.get("id"):
+                                            if vrt_id in item3.get("id", []):
+                                                if item3.get("priority"):
+                                                    vrt_priority_new = item3.get("priority", [])
+                                                    if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                                        vrt_priority = vrt_priority_new
+                                                elif item3.get("children"):
+                                                    count = 0
+                                                    vrt_priority_new = 0
+                                                    for item4 in item3.get("children", []):
+                                                        if item4.get("priority"):
+                                                            vrt_priority_new += item4.get("priority", [])
+                                                            count += 1
+                                                    if count != 0:
+                                                        vrt_priority_new = vrt_priority_new / count
+                                                        if vrt_priority_new < vrt_priority or vrt_priority == 0:
+                                                            vrt_priority = vrt_priority_new
 
             dictionary = {
                 "id": cwe_id,
@@ -177,7 +200,7 @@ for cwe in cweList:
                 },
                 "bugcrowd": {
                     "collected_date": collected_date,
-                    "vrt_id": vrt_id,
+                    "vrt_id": vrt_ids,
                     "parent_vrt_id": parent_vrt_id,
                     "vrt_priority": vrt_priority
                 }
@@ -189,8 +212,10 @@ for cwe in cweList:
     #     for dic in response.json()["data"]["__type"]['fields']:
     #         print(dic["name"])
 
+        allCWEJson.append(dictionary)
 
-
+with open(f"C:\\Users\\vishr\\PycharmProjects\\HackerOneScrape\\allCWEData.json", 'w') as f:
+    json.dump(allCWEJson, f)
 
 
 
