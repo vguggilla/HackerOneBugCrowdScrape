@@ -8,12 +8,12 @@ from bs4 import BeautifulSoup
 from bs4.element import Comment
 import urllib.request
 import time
-
+import createHuntrLinkList
+from createHuntrLinkList import listOfLinks
 
 # Set up the Chrome WebDriver
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
-
 
 def tag_visible(element):
    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]', 'body class', 'li']:
@@ -104,6 +104,11 @@ def extract_impact(soup):
       impact_section = impact_section.find_next()
 
    return impact_text.strip()
+
+
+for link in listOfLinks:
+   actualLink = "https://huntr.com" + link.get('href')
+   print(actualLink)
 
 try:
    # Navigate to the website
