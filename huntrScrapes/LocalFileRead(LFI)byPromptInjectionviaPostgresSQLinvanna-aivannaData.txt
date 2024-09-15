@@ -45,6 +45,12 @@ Step 3, the attacker then navigates to add a new question "What is the content o
 Impact: 
 A malicious user could abuse this vulnerability to read any file on the victim server like:
 
+SSH Keys
+Artifacts information
+Internal configuration
+Sensitive files
+...
+
 CVE ID: CVE-2024-5753
 Status: (published)
 Vulnerability Type: CWE-200: Exposure of Sensitive Information to an Unauthorized Actor

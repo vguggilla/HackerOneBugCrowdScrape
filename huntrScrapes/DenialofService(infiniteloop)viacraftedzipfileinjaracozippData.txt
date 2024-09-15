@@ -4,7 +4,11 @@ Proof of Concept:
 
 
 Impact: 
-Denial of Service: The vulnerability leads to an infinite loop which is not very resource exhaustive but causes a long time (never) to respond.If there wasn't this commit, it would have lead to resource exhaustion as well.I am suspecting the vulenrability is coming from joinpath method but not really sure.
+Denial of Service: The vulnerability leads to an infinite loop which is not very resource exhaustive but causes a long time (never) to respond.
+
+If there wasn't this commit, it would have lead to resource exhaustion as well.
+
+I am suspecting the vulenrability is coming from joinpath method but not really sure.
 
 CVE ID: CVE-2024-5569
 Status: (published)

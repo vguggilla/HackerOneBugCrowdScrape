@@ -124,7 +124,11 @@ setup(
 Now, when we package the app using the command python setup.py install, setuptools will install the dependency Package-A using the URLs present on http://localhost:8000/Package-A.
 These URLs are scanned and parsed by setuptools when it visits localhost:8000/Package-A. In our case, there are URLs:
 
+For version of setuptools - 65.5
+
 git://example.com/package-a.egg%20%26%20ls%20.%20%3E%20hello%26%20echo%20%40main%23egg%3DPackage-A
+
+For the latest version of setuptools - 69.1.1
 
 git://localhost:8000/CybrX&#32;&amp;&#32;ls&#32;&gt;&#32;hack&#32;&amp;/Package-A-0.0.1.tar.gz#sha256=03b39212b3408d8ca5f6247462b31a88cf3e64c0222cb179529ec2a6baa14d92
 
@@ -137,7 +141,11 @@ git://localhost:8000/CybrX & ls > hack &/Package-A-0.0.1.tar.gz#sha256=03b39212b
 We have to encode the URLs differently in different versions of setuptools because their decoding of HTML URLs changes between versions.
 
 Impact: 
-1 . All systems using the affected package index system to build their python projects can be targeted2 . Command shell access3 . Full system compromise
+1 . All systems using the affected package index system to build their python projects can be targeted
+
+2 . Command shell access
+
+3 . Full system compromise
 
 CVE ID: https://nvd.nist.gov/vuln/detail/CVE-2022-40897
 Status: (published)

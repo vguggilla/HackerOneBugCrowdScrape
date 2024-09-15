@@ -4,7 +4,17 @@ Proof of Concept:
 
 
 Impact: 
-This vulnerability allows a user with manager role to:Read, delete, overwrite database file (contains private embeddable widgets chats, api keys, passwords..etc), access comkeys that will be used to interact with internal collector api, read .env secrets.Shutdown the app and cause a denial of service.Admin account takeover: by accessing database file user can find api keys that will be used to elevate privileges in the app. or By overwriting the app database.
+This vulnerability allows a user with manager role to:
+
+Read, delete, overwrite database file (contains private embeddable widgets chats, api keys, passwords..etc), access comkeys that will be used to interact with internal collector api, read .env secrets.
+Shutdown the app and cause a denial of service.
+Admin account takeover: by accessing database file user can find api keys that will be used to elevate privileges in the app. or By overwriting the app database.
+
+Read, delete, overwrite database file (contains private embeddable widgets chats, api keys, passwords..etc), access comkeys that will be used to interact with internal collector api, read .env secrets.
+
+Shutdown the app and cause a denial of service.
+
+Admin account takeover: by accessing database file user can find api keys that will be used to elevate privileges in the app. or By overwriting the app database.
 
 CVE ID: CVE-2024-5211
 Status: (published)

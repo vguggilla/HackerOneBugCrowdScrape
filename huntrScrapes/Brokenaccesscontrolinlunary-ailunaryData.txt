@@ -63,7 +63,9 @@ Connection: close
 ...
 
 Impact: 
-
+Update samlIdpXml of another organization
+View SSO metadata of another organization
+Potential risk of account takeover for arbitrary users in the organization via the SSO feature if their email is known.
 
 CVE ID: CVE-2024-6582
 Status: (published)

@@ -54,6 +54,27 @@ def extract_proof_of_concept(soup):
    if not h1_tag:
       h1_tag = soup.find('h2', string='POC')
       h2 = True
+   if not h1_tag:
+      h1_tag = soup.find('h1', string='PoC')
+   if not h1_tag:
+      h1_tag = soup.find('h2', string='PoC')
+      h2 = True
+   if not h1_tag:
+      h1_tag = soup.find('h1', string=lambda x: x and 'POC' in x)
+   if not h1_tag:
+      h1_tag = soup.find('h2', string=lambda x: x and 'POC' in x)
+      h2 = True
+   if not h1_tag:
+      h1_tag = soup.find('h1', string=lambda x: x and 'Proof of Concept' in x)
+   if not h1_tag:
+      h1_tag = soup.find('h2', string=lambda x: x and 'Proof of Concept' in x)
+      h2 = True
+   if not h1_tag:
+      h1_tag = soup.find('h1', string=lambda x: x and 'Poc' in x)
+   if not h1_tag:
+      h1_tag = soup.find('h2', string=lambda x: x and 'Poc' in x)
+      h2 = True
+
    if h1_tag:
       proof_of_concept_section = h1_tag.find_next()
 
@@ -67,7 +88,7 @@ def extract_proof_of_concept(soup):
             break
          if proof_of_concept_section.name in ['p', 'pre', 'h2', 'h3']:
             proof_of_concept_text += proof_of_concept_section.text.strip() + '\n\n'
-         elif proof_of_concept_section.name == 'ol':
+         elif proof_of_concept_section.name in ['ol', 'ul']:
             for li in proof_of_concept_section.find_all('li'):
                proof_of_concept_text += li.text.strip() + '\n'
             proof_of_concept_text += '\n'  # Add an extra newline after the list
@@ -102,8 +123,8 @@ def extract_impact(soup):
       if impact_section.name == 'div':  # Replace 'after' with appropriate class
          break
       if impact_section.name in ['p', 'pre', 'h2']:
-         impact_text += impact_section.text.strip()
-      elif impact_section.name == 'ol':
+         impact_text += impact_section.text.strip() + '\n\n'
+      elif impact_section.name in ['ol', 'ul']:
          for li in impact_section.find_all('li'):
             impact_text += li.text.strip() + '\n'
          impact_text += '\n'  # Add an extra newline after the list

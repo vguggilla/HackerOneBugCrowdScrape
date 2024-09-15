@@ -41,7 +41,9 @@ When user click into the lick, pop up to display and get cookie of victim
 Poc2
 
 Impact: 
-
+Data Theft: Attackers can steal sensitive information, such as user credentials, personal data, and session tokens, leading to identity theft and unauthorized access to user accounts.
+Session Hijacking: Malicious scripts can hijack user sessions, allowing attackers to impersonate users, perform unauthorized actions, and access restricted areas of the application.
+Reputation Damage: Exploitation of stored XSS vulnerabilities can damage the trust and reputation of the organization, resulting in loss of customer confidence and potential legal consequences.
 
 CVE ID: CVE-2024-6229
 Status: (published)

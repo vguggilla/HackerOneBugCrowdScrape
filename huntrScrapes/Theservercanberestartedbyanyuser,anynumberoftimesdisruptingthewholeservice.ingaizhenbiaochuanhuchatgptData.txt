@@ -25,7 +25,21 @@ Priority: u=4
 Any request at /queue/join? endpoint with "fn_index":66 restarts the server.
 
 Impact: 
-Service Disruption:Unrestricted server restarts have the potential to severely disrupt service availability, causing significant inconvenience to legitimate users and undermining essential business operations.Data Loss or Corruption:Abrupt server restarts pose a serious risk of data loss or corruption, especially if ongoing operations or transactions are interrupted without appropriate safeguards in place.System Compromise:Repeated unauthorized restarts could destabilize the server environment, leading to system crashes or creating exploitable vulnerabilities that compromise the integrity and security of the entire system.Trust Erosion:Inability to prevent unauthorized server restarts undermines user trust and confidence in the application's reliability and security measures, potentially resulting in reputational damage and loss of user trust.
+Service Disruption:
+
+Unrestricted server restarts have the potential to severely disrupt service availability, causing significant inconvenience to legitimate users and undermining essential business operations.
+
+Data Loss or Corruption:
+
+Abrupt server restarts pose a serious risk of data loss or corruption, especially if ongoing operations or transactions are interrupted without appropriate safeguards in place.
+
+System Compromise:
+
+Repeated unauthorized restarts could destabilize the server environment, leading to system crashes or creating exploitable vulnerabilities that compromise the integrity and security of the entire system.
+
+Trust Erosion:
+
+Inability to prevent unauthorized server restarts undermines user trust and confidence in the application's reliability and security measures, potentially resulting in reputational damage and loss of user trust.
 
 CVE ID: CVE-2024-6036
 Status: (published)

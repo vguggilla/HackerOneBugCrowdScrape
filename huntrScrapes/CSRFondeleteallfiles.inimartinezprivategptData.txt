@@ -33,6 +33,10 @@ Just create index.html and paste the following:
 </body>
 </html>
 
+Replace the host accordingly.
+Host it, and send the link to victim.
+As soon as victim clicks, It will delete all the uploaded files on server.
+
 Impact: 
 Data Loss: If the targeted application is responsible for managing important data, such as uploaded files, the CSRF attack could result in the unauthorized deletion or modification of this data. In this case, the attack specifically aims to delete all uploaded files on the server, causing data loss for the application's users.
 Service Disruption: Deleting all uploaded files can lead to service disruption for the application's users. For example, if the files are essential for the application's functionality or if they contain critical information for users, their sudden removal could render the application unusable or significantly impair its functionality.

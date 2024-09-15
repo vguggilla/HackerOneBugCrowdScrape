@@ -28,7 +28,9 @@ $ curl -X 'POST' 'http://0.0.0.0:4000/chat/completions' \
 5: Confirm ngrok log (http://locahost:4000)
 
 Impact: 
-The SSRF vulnerability results in the leakage of the OpenAI keys that are managed by the proxy. If an attacker exploits this vulnerability, they can directly send requests to OpenAI without going through the proxy. This direct access allows them to bypass the proxy's rate limiting and budget management controls, potentially resulting in unauthorized usage and increased costs.In addition, there are also common risks associated with Blind SSRF (such as scanning the internal network).
+The SSRF vulnerability results in the leakage of the OpenAI keys that are managed by the proxy. If an attacker exploits this vulnerability, they can directly send requests to OpenAI without going through the proxy. This direct access allows them to bypass the proxy's rate limiting and budget management controls, potentially resulting in unauthorized usage and increased costs.
+
+In addition, there are also common risks associated with Blind SSRF (such as scanning the internal network).
 
 CVE ID: CVE-2024-6587
 Status: (published)

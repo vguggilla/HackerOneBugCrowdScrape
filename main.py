@@ -206,7 +206,7 @@ for cwe in cweList:
                 }
             }
 
-        with open(f"C:\\Users\\vishr\\PycharmProjects\\HackerOneScrape\\{cwe}Data.json", 'w') as f:
+        with open(f"C:\\Users\\vishr\\PycharmProjects\\HackerOneScrape\\HackerOneBugcrowdScrapes\\{cwe}Data.json", 'w') as f:
             json.dump(dictionary, f)
     #     print(response.json()["data"]["__type"]['fields'])
     #     for dic in response.json()["data"]["__type"]['fields']:

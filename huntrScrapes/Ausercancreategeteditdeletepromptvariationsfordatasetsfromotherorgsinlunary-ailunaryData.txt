@@ -1,7 +1,19 @@
 Title: A user can create/get/edit/delete prompt variations for datasets from other orgs in lunary-ai/lunary
 
 Proof of Concept: 
+1- Log in as a user from org A (org id: 72cd3972-d8d5-4409-89fd-345fecaa8bae).
 
+2- In a private browser session, log in as a user from org B (org id: f2e845c9-3b01-4d7d-99bb-b9a985bc8f64).
+
+3- In org A, go to Evaluations --> Datasets --> Edit dataset --> Add prompt.
+
+4- Add required information to create the prompt and intercept the request PATCH /v1/datasets/variations/1aa40f94-e6bc-40d0-8a8b-c4d5d525520e?projectId=37e49a67-5dd7-463c-8bf6-ee2f3811d6e0 that edits the current prompt while the user adds content.
+
+5- Copy the token from user org B and paste it to the request. Send it and see the token is invalid: Invalid token
+
+6- Remove the projectId value from the parameter and send the request again. Note the change could be made: Request sent - prompt edited from another org user.
+
+7- With user org A, try to get the recent resource by sending the request GET /v1/datasets/8695ded1-c59f-4b6e-95d8-c002aeca3119?projectId=37e49a67-5dd7-463c-8bf6-ee2f3811d6e0. Note the resource has been edited successfully: Resource edited
 
 Impact: 
 A user can create, update, delete and get information about prompts not owned by the organization or project. Then, the legitimate users will see their dataset prompts edited, removed without authorization, therefore results from experiments will be affected., information inconsistent.

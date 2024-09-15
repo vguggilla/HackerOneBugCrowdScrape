@@ -1,10 +1,20 @@
 Title: User can access unauthorized projects from org in lunary-ai/lunary
 
 Proof of Concept: 
-
+Create an organization and a new project "Project #1"
+Create a second project "Project #2"
+Invite an user as a member, but only to "Project #2"
+From the first user, create & Edit a prompt in the dashboard, and record the HTTP query in the devtools
+Using the same recorded query but with the second's user access token, replay the HTTP query and edit the prompt you don't have access to.
 
 Impact: 
-It allows unauthorized users to have complete control over all resources within a project. An attacker exploiting this vulnerability can gain the ability to create, update, read, and delete any resource associated with the project, regardless of their intended initial project permissions.The attacker can access and potentially exfiltrate confidential user data stored within the project, compromising the privacy and security of sensitive information. Additionally, the attacker can maliciously modify or delete crucial resources, such as prompts, runs, evaluations, and datasets, causing data loss and disrupting the functionality of the project.The potential for service disruption is significant, as the attacker can deliberately delete essential resources, rendering the project unusable or causing inconsistencies in its operation. This can have a severe impact on the availability and reliability of the project for legitimate users who depend on its functionality.Moreover, the unauthorized access to project resources can enable the attacker to perform further malicious activities, such as tampering with data, injecting false information, or using the project's resources for unauthorized purposes. This can compromise the integrity and trustworthiness of the project and its associated data.
+It allows unauthorized users to have complete control over all resources within a project. An attacker exploiting this vulnerability can gain the ability to create, update, read, and delete any resource associated with the project, regardless of their intended initial project permissions.
+
+The attacker can access and potentially exfiltrate confidential user data stored within the project, compromising the privacy and security of sensitive information. Additionally, the attacker can maliciously modify or delete crucial resources, such as prompts, runs, evaluations, and datasets, causing data loss and disrupting the functionality of the project.
+
+The potential for service disruption is significant, as the attacker can deliberately delete essential resources, rendering the project unusable or causing inconsistencies in its operation. This can have a severe impact on the availability and reliability of the project for legitimate users who depend on its functionality.
+
+Moreover, the unauthorized access to project resources can enable the attacker to perform further malicious activities, such as tampering with data, injecting false information, or using the project's resources for unauthorized purposes. This can compromise the integrity and trustworthiness of the project and its associated data.
 
 CVE ID: CVE-2024-4146
 Status: (published)

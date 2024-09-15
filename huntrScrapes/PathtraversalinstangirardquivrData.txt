@@ -83,7 +83,7 @@ connection: close
 poc2
 
 Impact: 
-
+Upload file to another path in s3 buckets
 
 CVE ID: CVE-2024-6583
 Status: (assigned)

