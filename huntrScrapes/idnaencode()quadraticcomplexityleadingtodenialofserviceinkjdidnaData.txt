@@ -1,0 +1,26 @@
+Title: idna encode() quadratic complexity leading to denial of service in kjd/idna
+
+Proof of Concept: 
+
+
+Impact: 
+URL parsing is ubiquitous and relatively small malicious payloads can incur a large computational load. Repeated/concurrent exploitation of this bug in susceptible API endpoints or ingestion mechanisms can reasonably be expected to reduce availability or rack up compute costs.
+
+CVE ID: CVE-2024-3651
+Status: (published)
+Vulnerability Type: CWE-400: Denial of Service
+Severity: Medium (6.2)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Pypi
+Affected Version: 3.6
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $125
+Fix Bounty: $31.25

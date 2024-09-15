@@ -1,0 +1,26 @@
+Title: Unexpected POST request shuts down server in h2oai/h2o-3
+
+Proof of Concept: 
+
+
+Impact: 
+This vulnerability shuts down the server, causing denial of service.
+
+CVE ID: CVE-2024-5979
+Status: (published)
+Vulnerability Type: CWE-400: Denial of Service
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Other
+Affected Version: 3.46.0
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

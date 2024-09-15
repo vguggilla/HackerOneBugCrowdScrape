@@ -1,0 +1,26 @@
+Title: Insecure Temporary File in pypa/setuptools
+
+Proof of Concept: 
+
+
+Impact: 
+Availability will get affected because of this vulnerability.
+
+CVE ID: None
+Status: None
+Vulnerability Type: CWE-377: Insecure Temporary File
+Severity: Medium (4)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: Low
+Registry: Pypi
+Affected Version: <=69.4.2
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $125
+Fix Bounty: $31.25

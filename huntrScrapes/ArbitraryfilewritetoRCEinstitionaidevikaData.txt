@@ -1,0 +1,26 @@
+Title: Arbitrary file write to RCE in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+Remote Code ExecutionArbitrary File Write
+
+CVE ID: CVE-2024-5927
+Status: (rejected)
+Vulnerability Type: CWE-29: Path Traversal: '\..\filename'
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900 to $1260
+Fix Bounty: $225

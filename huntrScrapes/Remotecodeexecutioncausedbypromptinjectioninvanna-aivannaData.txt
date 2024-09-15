@@ -1,0 +1,26 @@
+Title: Remote code execution caused by prompt injection in vanna-ai/vanna
+
+Proof of Concept: 
+
+
+Impact: 
+Attacker can achieve RCE on the app backend server via prompt injection and gain the full control of the server.
+
+CVE ID: CVE-2024-5826
+Status: (published)
+Vulnerability Type: CWE-94:  Code Injection
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

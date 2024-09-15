@@ -1,0 +1,26 @@
+Title: Local file read in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+Local file read
+
+CVE ID: CVE-2024-5334
+Status: (published)
+Vulnerability Type: CWE-73: External Control of File Name or Path
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

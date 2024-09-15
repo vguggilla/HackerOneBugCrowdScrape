@@ -1,0 +1,26 @@
+Title: SQL Injection through api_key in berriai/litellm
+
+Proof of Concept: 
+
+
+Impact: 
+An SQL injection can lead to :
+
+CVE ID: CVE-2024-5225
+Status: (published)
+Vulnerability Type: CWE-89:  SQL Injection
+Severity: Medium (6.4)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: None
+Scope: Changed
+Confidentiality: Low
+Integrity: Low
+Availability: None
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

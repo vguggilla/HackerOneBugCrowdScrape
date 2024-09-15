@@ -1,0 +1,26 @@
+Title: Arbitrary file overwrite and arbitrary data exfiltration in aimhubio/aim
+
+Proof of Concept: 
+
+
+Impact: 
+The presented vulnerabilities makes it possible for an attacker to remotely overwrite any file on the host server, and to exfiltrate any data from the host server. This can be abused to cause denial of service by overwriting critical system files, loss of private data, and (eventually) remote code execution by e.g. downloading private ssh-keys.
+
+CVE ID: CVE-2024-6396
+Status: (published)
+Vulnerability Type: CWE-29: Path Traversal: '\..\filename'
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: 3.19.3
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

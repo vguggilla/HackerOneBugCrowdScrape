@@ -1,0 +1,30 @@
+Title: Path traversal that leads to arbitrary file read and Denial of Service in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+This vulnerability allows an attacker to retrieve every file present on the system and achieve Denial of Service. It can have great consequences:Achieving RCE by retrieving private SSH keys
+Reading private files
+Reading source code for application
+Reading configuration files ...
+Denial of Service
+
+CVE ID: CVE-2024-5926
+Status: (published)
+Vulnerability Type: CWE-29: Path Traversal: '\..\filename'
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: High
+Registry: Pypi
+Affected Version: *
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

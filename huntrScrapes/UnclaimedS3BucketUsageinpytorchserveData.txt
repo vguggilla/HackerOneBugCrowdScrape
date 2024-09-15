@@ -1,0 +1,26 @@
+Title: Unclaimed S3 Bucket Usage in pytorch/serve
+
+Proof of Concept: 
+POC link which shows bucket is taken over by me :- https://benchmarkai-metrics-prod.s3.amazonaws.com/index.html
+
+Impact: 
+If the "benchmarkai-metrics-prod" S3 bucket is unclaimed or improperly secured, it could potentially allow unauthorized access to sensitive data or result files uploaded by the script. This may lead to data breaches, exposure of proprietary information, or unauthorized modifications to stored data, posing significant security risks to the organization and its stakeholders.
+
+CVE ID: CVE-2024-6577
+Status: (assigned)
+Vulnerability Type: CWE-840: Business Logic Errors
+Severity: Medium (6.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: Low
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

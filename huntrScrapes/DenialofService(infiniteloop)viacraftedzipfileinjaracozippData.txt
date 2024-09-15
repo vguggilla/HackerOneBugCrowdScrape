@@ -1,0 +1,26 @@
+Title: Denial of Service (infinite loop) via crafted zip file in jaraco/zipp
+
+Proof of Concept: 
+
+
+Impact: 
+Denial of Service: The vulnerability leads to an infinite loop which is not very resource exhaustive but causes a long time (never) to respond.If there wasn't this commit, it would have lead to resource exhaustion as well.I am suspecting the vulenrability is coming from joinpath method but not really sure.
+
+CVE ID: CVE-2024-5569
+Status: (published)
+Vulnerability Type: CWE-835: Loop with Unreachable Exit Condition ('Infinite Loop')
+Severity: Medium (6.2)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Pypi
+Affected Version: All
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $125
+Fix Bounty: $31.25

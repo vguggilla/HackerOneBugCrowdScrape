@@ -1,0 +1,26 @@
+Title: A user can create/get/edit/delete prompt variations for datasets from other orgs in lunary-ai/lunary
+
+Proof of Concept: 
+
+
+Impact: 
+A user can create, update, delete and get information about prompts not owned by the organization or project. Then, the legitimate users will see their dataset prompts edited, removed without authorization, therefore results from experiments will be affected., information inconsistent.
+
+CVE ID: CVE-2024-5389
+Status: (published)
+Vulnerability Type: CWE-1220: Insufficient Granularity of Access Control
+Severity: Medium (5.7)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Npm
+Affected Version: 1.2.13
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $900
+Fix Bounty: $225

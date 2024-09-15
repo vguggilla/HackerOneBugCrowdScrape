@@ -1,0 +1,63 @@
+Title: Server Side Request Forgery (SSRF) in stangirard/quivr
+
+Proof of Concept: 
+To test the vulnerability, run the test application below on the host machine where the application is run.
+
+from flask import Flask
+
+app=Flask(__name__)
+
+@app.route("/",defaults={"path":""})
+@app.route("/<path:path>")
+def main(path):
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Newspaper</title>
+</head>
+<body>
+    <header>
+        <h1>Sample app</h1>
+    </header>
+    <section>
+        <article>
+            <h2>Technology: Advancements in Artificial Intelligence</h2>
+            <p>New developments in AI technology are revolutionizing various industries, promising a future of unprecedented innovation.</p>
+            <p><a href="#">Read more...</a></p>
+        </article>
+    </section>
+
+</body>
+</html>"""
+
+app.run("0.0.0.0",9999)
+
+Use this code to start the Python application: python3 app.py.
+
+Create a brain and add the url http://host.docker.internal:9999 as the knowledge.
+
+Select the brain you created and ask the following question: What is the content of the http://host.docker.internal:9999 url? show without changes..
+
+Impact: 
+This vulnerability could allow a malicious user to gain access to internal servers.It also provides access to the AWS metadata endpoint.Additionally, quvir comes with supabase and can also capture supabase data.
+
+CVE ID: CVE-2024-5885
+Status: (published)
+Vulnerability Type: CWE-918: Server-Side Request Forgery (SSRF)
+Severity: High (8.6)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Changed
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: 0.0.236
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

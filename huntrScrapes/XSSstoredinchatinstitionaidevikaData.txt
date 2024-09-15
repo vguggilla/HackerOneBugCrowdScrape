@@ -1,0 +1,36 @@
+Title: XSS stored in chat in stitionai/devika
+
+Proof of Concept: 
+1- Open http://localhost:3000 after running python devika.py and bun run dev for backend and UI.
+
+2- Create a project and choose a model, for example, "Gemini 1.0 Pro".
+
+3- Enter the following payloads in the chat and Send: <iframe srcdoc="<svg onload=alert(4);>">; "><img src="x" onerror="prompt1"> and others.
+
+4- See XSS is immediately triggered: XSS triggered
+
+5- See console logs: socket logs
+
+6- See socket logs in the platform triggering XSS when you access the page: Logs
+
+Impact: 
+Stored XSS, stolen credentials, info from chat, project, logs, etc.
+
+CVE ID: CVE-2024-5711
+Status: (published)
+Vulnerability Type: CWE-79: Cross-site Scripting (XSS) - Stored
+Severity: High (8.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: None
+Registry: Other
+Affected Version: n/a
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

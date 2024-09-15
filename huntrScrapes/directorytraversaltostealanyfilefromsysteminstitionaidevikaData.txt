@@ -1,0 +1,26 @@
+Title: directory traversal to steal any file from system in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+directory traversal in /api/download-project
+
+CVE ID: CVE-2024-5548
+Status: (published)
+Vulnerability Type: CWE-22: Path Traversal
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

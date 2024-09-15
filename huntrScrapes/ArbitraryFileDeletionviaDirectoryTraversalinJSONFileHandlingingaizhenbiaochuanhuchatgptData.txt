@@ -1,0 +1,26 @@
+Title: Arbitrary File Deletion via Directory Traversal in JSON File Handling in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+https://drive.google.com/file/d/1UxMyqN7YmFdLHGixKk5V9QJUXJmUKbk7/view?usp=sharing
+
+Impact: 
+This vulnerability allows any user to delete critical JSON files, including configuration files, from the server. An attacker could exploit this to disrupt the functioning of the system, manipulate settings, or potentially cause data loss or corruption. Additionally, the ability to traverse and delete any JSON file on the server can lead to unauthorized access and manipulation of sensitive information.
+
+CVE ID: CVE-2024-6255
+Status: (published)
+Vulnerability Type: CWE-22: Path Traversal
+Severity: High (8.2)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: High
+Registry: Other
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

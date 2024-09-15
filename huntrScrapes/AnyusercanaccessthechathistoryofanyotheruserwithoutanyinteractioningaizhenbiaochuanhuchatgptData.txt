@@ -1,0 +1,28 @@
+Title: Any user can access the chat history of any other user without any interaction in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+https://drive.google.com/file/d/1N-9GnxlpdkRXyhTAdtqN5E__23QGBFUm/view?usp=sharing
+
+Impact: 
+Data Breaches: Exploiting vulnerabilities in the system to gain unauthorized access to chat histories can lead to widespread data breaches. This could result in the exposure of sensitive information, including personal details, financial data, or confidential conversations.
+Identity Theft: Malicious actors could use information obtained from chat histories to impersonate users or commit identity theft. This can have far-reaching consequences for the affected individuals, including financial loss and damage to their reputation.
+Manipulation and Fraud: Access to chat histories can provide insights into users' behaviors, preferences, and relationships. Malicious actors may exploit this information to manipulate users or orchestrate fraudulent schemes, such as social engineering attacks or phishing scams.
+
+CVE ID: CVE-2024-4520
+Status: (published)
+Vulnerability Type: CWE-284: Improper Access Control
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Npm
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

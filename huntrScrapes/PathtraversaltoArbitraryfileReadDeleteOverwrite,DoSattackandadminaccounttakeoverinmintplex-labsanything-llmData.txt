@@ -1,0 +1,26 @@
+Title: Path traversal to Arbitrary file Read/Delete/Overwrite, DoS attack and admin account takeover in mintplex-labs/anything-llm
+
+Proof of Concept: 
+
+
+Impact: 
+This vulnerability allows a user with manager role to:Read, delete, overwrite database file (contains private embeddable widgets chats, api keys, passwords..etc), access comkeys that will be used to interact with internal collector api, read .env secrets.Shutdown the app and cause a denial of service.Admin account takeover: by accessing database file user can find api keys that will be used to elevate privileges in the app. or By overwriting the app database.
+
+CVE ID: CVE-2024-5211
+Status: (published)
+Vulnerability Type: CWE-29: Path Traversal: '\..\filename'
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: High
+User Interaction: None
+Scope: Changed
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Npm
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $1260
+Fix Bounty: $225

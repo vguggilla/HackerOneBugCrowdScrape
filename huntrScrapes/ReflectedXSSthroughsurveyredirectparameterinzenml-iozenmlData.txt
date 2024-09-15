@@ -1,0 +1,28 @@
+Title: Reflected XSS through survey redirect parameter in zenml-io/zenml
+
+Proof of Concept: 
+Go to http://127.0.0.1:8237/survey?redirect=javascript:alert(1);
+Complete the survey and click on Go to Dashboard button
+XSS popup will execute
+
+Impact: 
+An attacker can steal cookies which can lead to account takeover
+
+CVE ID: CVE-2024-5062
+Status: (published)
+Vulnerability Type: CWE-79: Cross-site Scripting (XSS) - Reflected
+Severity: Medium (5.3)
+Attack Vector: Network
+Attack Complexity: High
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: 0.57.1
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $125
+Fix Bounty: $31.25

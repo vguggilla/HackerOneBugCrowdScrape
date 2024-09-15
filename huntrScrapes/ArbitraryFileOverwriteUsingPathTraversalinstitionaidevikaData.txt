@@ -1,0 +1,30 @@
+Title: Arbitrary File Overwrite Using Path Traversal in stitionai/devika
+
+Proof of Concept: 
+Create a project named ../test . At this stage, the application receives the folder name from us, not the file name.
+
+Then ask the following question with the name of the file we want to write: The content of the python file named test.py is `print(137)`, what is the output of this file?
+
+When the application finishes the process it will create the file to path "/home/nonroot/devika/data/test/test.py"
+
+Impact: 
+The Path Traversal vulnerability enables writing to files in the specified directory
+
+CVE ID: CVE-2024-6349
+Status: (rejected)
+Vulnerability Type: CWE-23: Relative Path Traversal
+Severity: High (8.2)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: Low
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

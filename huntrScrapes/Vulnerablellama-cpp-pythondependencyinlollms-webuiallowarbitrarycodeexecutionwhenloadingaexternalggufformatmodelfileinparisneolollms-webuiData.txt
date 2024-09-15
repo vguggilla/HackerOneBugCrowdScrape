@@ -1,0 +1,26 @@
+Title: Vulnerable llama-cpp-python dependency in lollms-webui allow arbitrary code execution when loading a external gguf format model file in parisneo/lollms-webui
+
+Proof of Concept: 
+
+
+Impact: 
+Remote Code Execution in remote machine.
+
+CVE ID: CVE-2024-4897
+Status: (published)
+Vulnerability Type: CWE-76: Improper Neutralization of Equivalent Special Elements
+Severity: High (8.4)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: Latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

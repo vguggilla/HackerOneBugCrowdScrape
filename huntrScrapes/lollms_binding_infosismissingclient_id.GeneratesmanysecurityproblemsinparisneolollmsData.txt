@@ -1,0 +1,26 @@
+Title: lollms_binding_infos is missing client_id. Generates many security problems in parisneo/lollms
+
+Proof of Concept: 
+
+
+Impact: 
+Without client_id, attackers will be able to perform csrf and local attacks
+
+CVE ID: CVE-2024-6040
+Status: (published)
+Vulnerability Type: CWE-304: Missing Critical Step in Authentication
+Severity: Medium (4.4)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: None
+Integrity: Low
+Availability: Low
+Registry: Other
+Affected Version: v9.8 - Latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $75
+Fix Bounty: $18.75

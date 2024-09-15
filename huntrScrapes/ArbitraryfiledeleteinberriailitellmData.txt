@@ -1,0 +1,26 @@
+Title: Arbitrary file delete in berriai/litellm
+
+Proof of Concept: 
+
+
+Impact: 
+Any user can delete an arbitraty file on server. We can imagine deleting ssh key, sqlite database, configuration files...
+
+CVE ID: CVE-2024-4888
+Status: (published)
+Vulnerability Type: CWE-20: Improper Input Validation
+Severity: Medium (6.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: High
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Pypi
+Affected Version: latest
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $125
+Fix Bounty: $31.25

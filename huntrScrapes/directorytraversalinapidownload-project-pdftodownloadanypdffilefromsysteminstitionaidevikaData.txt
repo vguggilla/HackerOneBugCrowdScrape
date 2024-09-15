@@ -1,0 +1,26 @@
+Title: directory traversal in /api/download-project-pdf to download any pdf file from system in stitionai/devika
+
+Proof of Concept: 
+
+
+Impact: 
+directory traversal in /api/download-project-pdf to download any pdf file from system
+
+CVE ID: CVE-2024-5547
+Status: (published)
+Vulnerability Type: CWE-23: Relative Path Traversal
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Other
+Affected Version: latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $540
+Fix Bounty: $112.5

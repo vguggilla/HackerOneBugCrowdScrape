@@ -1,0 +1,36 @@
+Title: lack of path sanitization for windows leads to LFI  in parisneo/lollms
+
+Proof of Concept: 
+There's many routes that utilize this function that are vulnerable but for the sake of example will test it for personalities route and also  /del_preset route
+
+Browse to the following path
+
+http://127.0.0.1:9600/personalities/%5Cpath%5Cto%5Csensitive%5Cfile.txt
+
+%5C is a backward slash urlencoded
+
+
+
+The /del_preset endpoint allows an attacker to delete any file, which will affect the system's availability; for example, the attacker deletes the source code. So availability should be high. refer to this report
+
+Impact: 
+Any file on the windows filesystem can be read or deleted by an attacker with access to the Lollms application
+
+CVE ID: CVE-2024-4315
+Status: (published)
+Vulnerability Type: CWE-98: PHP Remote File Inclusion
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: High
+Registry: Pypi
+Affected Version: 9.5
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $1080
+Fix Bounty: $225

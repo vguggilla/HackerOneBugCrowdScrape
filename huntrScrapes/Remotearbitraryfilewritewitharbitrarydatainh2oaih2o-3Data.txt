@@ -1,0 +1,26 @@
+Title: Remote arbitrary file write with arbitrary data in h2oai/h2o-3
+
+Proof of Concept: 
+
+
+Impact: 
+The main impact of this vulnerability is being able to write arbitrary data to any arbitrary file on a remote server running h2o-3. In this case, a valid target would for example be to overwrite a private SSH-key allowing for full remote access, or to overwrite script-file that the system is known to run. (The attacker data is always newline-terminated, but most text-based data or SSH-key files are newline-terminated by default, so this should be fine) The full impact will therefore eventually be remote code execution and complete access to the system that h2o-3 is running on.
+
+CVE ID: CVE-2024-5986
+Status: (assigned)
+Vulnerability Type: CWE-73: External Control of File Name or Path
+Severity: Critical (9.1)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: None
+Integrity: High
+Availability: High
+Registry: Other
+Affected Version: 3.46.0.1
+Visibility: Public
+Status: Awaiting fix
+Disclosure Bounty: $900
+Fix Bounty: $225

